@@ -1,0 +1,5 @@
+RewriteEngine On
+RewriteBase /API
+Options +FollowSymLinks
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule .* serverAPI.php/$0 [L]
