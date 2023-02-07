@@ -32,7 +32,7 @@ export default {
 
 
             // var apikey = "";
-            var input = "/API/Usuaris/Login";
+            var input = "http://beehive.daw.institutmontilivi.cat/API/Usuaris/Login";
             var output = "";
 
             var data = {
@@ -65,7 +65,7 @@ export default {
         */
         generateToken() {
             var apikey = "63cd7a118270d1ba0474ac8df37393ec76d54c67098ddd55c0c5b93e994db10f";
-            var input = "http://localhost:3000/API/Token";
+            var input = "http://beehive.daw.institutmontilivi.cat/API/Token";
             var output;
 
             // fem una crida síncrona amb xmlhttprequest
@@ -88,7 +88,7 @@ export default {
         }
     },
     mounted() {
-        // this.generateToken()
+        this.generateToken()
     }
 }
 </script>
