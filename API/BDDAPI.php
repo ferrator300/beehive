@@ -311,6 +311,16 @@ class BDD {
         }
     }
 
+    /* 	Function: recuperarUsauri
+		
+		Recupera l'informació de l'usuari a partir del seu Token
+			
+        Parameters:
+            $token - Token Taula Usuari.
+
+		Returns:
+			Recupera l'informació de l'usuari de la Base de Dades en format JSON
+	*/
     public function recuperarUsauri($token) {
         try {
             $stmt = $this->conn->prepare("SELECT Nom, Email, Rol FROM Usuari WHERE Token= :token");
@@ -361,6 +371,16 @@ class BDD {
         }
     }
 
+    /* 	Function: comprovarLlistaTasques
+		
+		Comprova si l'usuari el qual passem per paràmetre, té tasques assignades.
+			
+        Parameters:
+            $email - Correu Electrònic de l'usuari.
+
+		Returns:
+			True o False depenent si te tasques assignades
+	*/
     public function comprovarLlistaTasques($email) {
         try {
             $stmt = $this->conn->prepare("SELECT * FROM Tasca WHERE Email = :email");
