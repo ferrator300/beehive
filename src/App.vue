@@ -2,9 +2,7 @@
   <v-app>
     <v-main>
       <router-view/>
-      <router-link to="/portada">Portada</router-link>
-      <router-link to="/about">About</router-link>
-      <router-link to="/users">Users</router-link>
+      
     </v-main>
   </v-app>
 </template>

@@ -3,6 +3,7 @@
     <v-layout id="toolbar">
       <v-navigation-drawer
         expand-on-hover
+        disable-resize-watcher
         rail
       >
         <v-list>
@@ -112,5 +113,8 @@ nav{
 }
 .v-layout{
   background-color: #e9e978;
+}
+.bg-black{
+  background-color: #d58821 !important;
 }
 </style>
