@@ -1,18 +1,34 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <login></login>
-  </div>
+    <log_in></log_in>
 </template>
 
 <script>
-// @ is an alias to /src
-import login from '@/components/login_form.vue'
-
+import log_in from '@/components/login_form.vue'
 export default {
-  name: 'HomeView',
-  components: {
-    login
-  }
+    name: 'PortadaView',
+    props: [],
+    data() {
+        return {
+            tasques: "hola"
+        }
+    },
+    components: {
+        log_in
+    },
+    methods: {
+        /* 
+            Function: getGraph
+
+            Obtenim un percentatge de tasques completades per mostrarles a la portada
+
+            Parameters:
+                none
+        */
+        // getGraph() {
+        //     var apikey = "";
+        //     var input = "beehive.daw.institutmontilivi.cat/API/Graph";
+        //     var output = "";
+        // }
+    }
 }
 </script>

@@ -2,14 +2,19 @@
   <v-app>
     <v-main>
       <router-view/>
-      <router-link to="/portada">Portada</router-link>
-      <router-link to="/about">About</router-link>
-      <router-link to="/users">Users</router-link>
     </v-main>
   </v-app>
 </template>
 
 <style>
+:root {
+  --honeyA : #241305;
+  --honeyB : #764214;
+  --honeyC : #a86327;
+  --honeyD : #d1b649;
+  --honeyE : #cbbf73;
+  --honeyF : #e9e978;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -17,7 +22,6 @@
   text-align: center;
   color: #2c3e50;
 }
-
 nav {
   padding: 30px;
 }

@@ -1,8 +1,7 @@
 <template>
-    <h1>login_form</h1>
     <v-text-field id="userEmail" label="Email"></v-text-field>
-    <v-text-field id="userPassword" label="Contrasenya"></v-text-field>
-    <v-btn>Identificació</v-btn>
+    <v-text-field id="userPassword" label="Contrasenya" type="password"></v-text-field>
+    <v-btn @click="logIn()">Identificació</v-btn>
 </template>
 <script>
 export default {
@@ -28,16 +27,15 @@ export default {
             var userEmail = document.getElementById('userEmail').value;
             var userPassword = document.getElementById('userPassword').value;
             var cryptPswd = this.encrypt(userPassword);
-            var token = this.token;
-
+            var token = localStorage.getItem('token');
 
             // var apikey = "";
-            var input = "/API/Usuaris/Login";
+            var input = "http://beehive.daw.institutmontilivi.cat/API/Usuari/Login";
             var output = "";
 
             var data = {
-                usermail: userEmail,
-                password: userPassword,
+                username: userEmail,
+                password: cryptPswd,
                 token: token
             };
 
@@ -47,8 +45,13 @@ export default {
             xmlhttp.setRequestHeader("Content-type", "application/json");
             xmlhttp.send(JSON.stringify(data));
 
-            output = JSON.parse(xmlhttp.responseText);
-            
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+                    output = JSON.parse(xmlhttp.responseText);
+                    localStorage.setItem('token_usuari', output);
+            }
+            // output = JSON.parse(xmlhttp.responseText);
+
             console.log(userEmail);
             console.log(cryptPswd);
             console.log(output);
@@ -65,7 +68,7 @@ export default {
         */
         generateToken() {
             var apikey = "63cd7a118270d1ba0474ac8df37393ec76d54c67098ddd55c0c5b93e994db10f";
-            var input = "http://localhost:3000/API/Token";
+            var input = "http://beehive.daw.institutmontilivi.cat/API/Token";
             var output;
 
             // fem una crida síncrona amb xmlhttprequest
@@ -80,6 +83,7 @@ export default {
 
             //TEST
             console.log(output)
+            localStorage.setItem('token', output);
         },
 
         encrypt(input) {
@@ -88,7 +92,7 @@ export default {
         }
     },
     mounted() {
-        // this.generateToken()
+        this.generateToken()
     }
 }
 </script>
