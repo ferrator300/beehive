@@ -82,6 +82,7 @@ export default {
     border: none;
     background-color: none;
     z-index: unset !important;
+    background-color: var(--honeyF)
 }
 #footer{
   width: 100%;
