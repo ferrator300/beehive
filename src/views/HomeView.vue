@@ -1,18 +1,15 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <login></login>
-  </div>
+  <toolbar></toolbar>
 </template>
 
 <script>
 // @ is an alias to /src
 import login from '@/components/login_form.vue'
-
+import toolbar from '@/components/toolbar.vue'
 export default {
   name: 'HomeView',
   components: {
-    login
+    login,  toolbar 
   }
 }
 </script>

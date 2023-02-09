@@ -1,6 +1,5 @@
 <template>
-    <toolbar></toolbar>
-    
+    <div>hola</div>
 </template>
 
 <script>
