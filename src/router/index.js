@@ -1,8 +1,8 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import PortadaView from '../views/PortadaView.vue'
-import UsersView from '../views/UsersView.vue'
-import AboutView from '../views/AboutView.vue'
+import HomeView from '@/views/PortadaView.vue'
+import PortadaView from '@/views/HomeView.vue'
+import UsersView from '@/views/UsersView.vue'
+import AboutView from '@/views/AboutView.vue'
 
 const routes = [
   {

@@ -1,11 +1,11 @@
 <template>
-    <usuari_fitxa></usuari_fitxa>
+    <createUser></createUser>
     <toolbar></toolbar>
 </template>
 
 <script>
-import usuari_fitxa from '../components/usuari_fitxa.vue'
-import toolbar from '../components/toolbar.vue'
+import createUser from '@/components/usuari_form.vue'
+import toolbar from '@/components/toolbar.vue'
 export default {
     name: 'UserView',
     props: [],
@@ -17,7 +17,7 @@ export default {
         }
     },
     components: {
-        usuari_fitxa,
+        createUser,
         toolbar
     },  
     methods: {

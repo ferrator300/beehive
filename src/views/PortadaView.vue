@@ -1,40 +1,22 @@
 <template>
-    <div>hola</div>
+  <div class="home">
+    <img alt="Vue logo" src="../assets/LOGO_FINAL.png">
+    <h1>BeeHive</h1>
+    <login></login>
+  </div>
 </template>
 
 <script>
-import log_in from '@/components/login_form.vue'
-import toolbar from '@/components/toolbar.vue'
+// @ is an alias to /src
+import login from '@/components/login_form.vue'
 
 export default {
-    name: 'PortadaView',
-    props: [],
-    data() {
-        return {
-            tasques: "hola"
-        }
-    },
-    components: {
-        log_in , toolbar 
-    },  
-    methods: {
-        /* 
-            Function: getGraph
-
-            Obtenim un percentatge de tasques completades per mostrarles a la portada
-
-            Parameters:
-                none
-        */
-        // getGraph() {
-        //     var apikey = "";
-        //     var input = "beehive.daw.institutmontilivi.cat/API/Graph";
-        //     var output = "";
-        // }
-    }
+  name: 'HomeView',
+  components: {
+    login
+  }
 }
 </script>
 
 <style>
-
 </style>

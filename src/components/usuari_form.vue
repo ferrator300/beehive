@@ -1,5 +1,8 @@
 <template>
-    <h1>usuari_form</h1>
+<v-text-field id="userName" label="Nom"></v-text-field>
+<v-text-field id="userEmail" label="Email"></v-text-field>
+<v-text-field id="userPassword" label="Contrasenya" type="password"></v-text-field>
+<v-text-field id="userPasswordConfirm" label="Confirmar Contrasenya" type="password"></v-text-field>
 </template>
 
 <script>
@@ -52,11 +55,11 @@ export default {
             Parameters:
                 none
         */
-        // createUser() {
-        //     var apikey = "";
-        //     var input = "beehive.daw.institutmontilivi.cat/API/Usuari/Crear";
-        //     var output = "";
-        // },
+        createUser() {
+            var input = "beehive.daw.institutmontilivi.cat/API/Usuari/Crear";
+            var token = localStorage.getItem('token_usuari');
+            var output = "";
+        },
 
         /* 
             Function: checkAction
