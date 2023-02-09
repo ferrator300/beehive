@@ -1,10 +1,12 @@
 <template>
     <toolbar></toolbar>
+    
 </template>
 
 <script>
 import log_in from '@/components/login_form.vue'
 import toolbar from '@/components/toolbar.vue'
+
 export default {
     name: 'PortadaView',
     props: [],
@@ -14,7 +16,7 @@ export default {
         }
     },
     components: {
-        log_in , toolbar
+        log_in , toolbar 
     },  
     methods: {
         /* 

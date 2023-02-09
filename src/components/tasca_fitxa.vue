@@ -9,10 +9,7 @@ export default {
     props: ['input_data'],
     data() {
         return {
-            nom: this.input_data.nom,
-            data_fi: this.input_data.data_fi,
-            estat: this.input_data.estat,
-            llistat: this.input_data.llistat
+            
         }
     },
     components: {
