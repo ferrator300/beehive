@@ -1,11 +1,12 @@
 <template>
-    <createUser></createUser>
     <toolbar></toolbar>
+    <footercustom></footercustom>
 </template>
 
 <script>
 import createUser from '@/components/usuari_form.vue'
 import toolbar from '@/components/toolbar.vue'
+import footercustom from '@/components/footercustom.vue'
 export default {
     name: 'UserView',
     props: [],
@@ -18,7 +19,8 @@ export default {
     },
     components: {
         createUser,
-        toolbar
+        toolbar,
+        footercustom
     },  
     methods: {
         /* 

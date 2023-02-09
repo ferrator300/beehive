@@ -8,12 +8,6 @@ export default {
     props: ['input_data', 'treballadors'],
     data() {
         return {
-            nom: this.input_data.nom,
-            desc: this.input_data.desc,
-            prioritat: this.input_data.prioritat,
-            estat: this.input_data.estat,
-            data_inici: this.input_data.data_inici,
-            data_fi: this.input_data.data_fi
         }
     },
     components: {

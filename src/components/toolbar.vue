@@ -3,7 +3,7 @@
     <v-layout id="toolbar">
       <v-navigation-drawer
         expand-on-hover
-        disable-resize-watcher
+        permanent
         rail
       >
         <v-list>
@@ -17,49 +17,33 @@
         <v-divider></v-divider>
 
         <v-list density="compact" nav>
-          <v-list-item prepend-icon="mdi-folder" title="My Files" value="myfiles"></v-list-item>
-          <v-list-item prepend-icon="mdi-account-multiple" title="Shared with me" value="shared"></v-list-item>
-          <v-list-item prepend-icon="mdi-star" title="Starred" value="starred"></v-list-item>
+          <router-link to="/portada">
+            <v-list-item prepend-icon="mdi-home" title="Tasques" value="tasques"></v-list-item>
+          </router-link>
+          <router-link to="/users">
+            <v-list-item prepend-icon="mdi-account-cog" title="Usuaris" value="usuaris"></v-list-item>
+          </router-link>
+          <router-link to="/about">
+            <v-list-item prepend-icon="mdi-logout-variant" title="Sortir" value="logout"></v-list-item>
+          </router-link>
+
         </v-list>
       </v-navigation-drawer>
 
       <v-main style="height: 250px"></v-main>
     </v-layout>
-
-    <v-footer class="d-flex flex-column" id="footer">
-    <div class="bg-teal d-flex w-100 align-center px-4">
-      <strong>Get connected with us on social networks!</strong>
-
-      <v-spacer></v-spacer>
-
-      <v-btn
-        v-for="icon in icons"
-        :key="icon"
-        class="mx-4"
-        :icon="icon"
-        variant="plain"
-        size="small"
-      ></v-btn>
-    </div>
-
-    <div class="px-4 py-2 bg-black text-center w-100">
-      {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
-    </div>
-  </v-footer>
   
 </template>
 
 <script>
+import { RouterLink } from 'vue-router';
+
 export default {
     name: 'toolbarComp',
     props: ['rol'],
-    data() {
-        return {
-            
-        }
-    },
     components: {
-    },  
+    RouterLink
+},  
     methods: {
         /* 
             Function: checkRol
@@ -69,11 +53,11 @@ export default {
             Parameters:
                 none
         */
-        // checkRol() {
-        //     var apikey = "";
-        //     var input = "";
-        //     var output = "";
-        // },
+        checkRol() {
+            var apikey = "";
+            var input = "";
+            var output = "";
+        },
 
         /* 
             Function: buildToolbar
@@ -97,6 +81,7 @@ export default {
     height: 100%;
     border: none;
     background-color: none;
+    z-index: unset !important;
 }
 #footer{
   width: 100%;
@@ -112,7 +97,7 @@ nav{
   background-color: #d58821 !important;
 }
 .v-layout{
-  background-color: #e9e978;
+  /* background-color: #e9e978; */
 }
 .bg-black{
   background-color: #d58821 !important;
