@@ -4,6 +4,8 @@
     <v-btn @click="logIn()">Identificació</v-btn>
 </template>
 <script>
+import vuetify from '@/plugins/vuetify';
+
 export default {
     name: 'login_form',
     props: {
@@ -27,7 +29,7 @@ export default {
             var userEmail = document.getElementById('userEmail').value;
             var userPassword = document.getElementById('userPassword').value;
             var cryptPswd = this.encrypt(userPassword);
-            var token = localStorage.getItem('token');
+            var userToken = localStorage.getItem('token');
 
             // var apikey = "";
             var input = "http://beehive.daw.institutmontilivi.cat/API/Usuari/Login";
@@ -35,8 +37,8 @@ export default {
 
             var data = {
                 username: userEmail,
-                password: cryptPswd,
-                token: token
+                password: userPassword,
+                token: userToken
             };
 
 
@@ -46,9 +48,11 @@ export default {
             xmlhttp.send(JSON.stringify(data));
 
             xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                     output = JSON.parse(xmlhttp.responseText);
                     localStorage.setItem('token_usuari', output);
+                    
+                }
             }
             // output = JSON.parse(xmlhttp.responseText);
 

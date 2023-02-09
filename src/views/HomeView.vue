@@ -1,9 +1,8 @@
 <template>
-    <log_in></log_in>
+    <h1>HOME</h1>
 </template>
 
 <script>
-import log_in from '@/components/login_form.vue'
 export default {
     name: 'PortadaView',
     props: [],
@@ -13,7 +12,6 @@ export default {
         }
     },
     components: {
-        log_in
     },
     methods: {
         /* 

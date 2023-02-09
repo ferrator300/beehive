@@ -1,10 +1,10 @@
 <template>
-    <create></create>
+    <createUser></createUser>
     <toolbar></toolbar>
 </template>
 
 <script>
-import create from '@/components/usuari_form.vue'
+import createUser from '@/components/usuari_form.vue'
 import toolbar from '@/components/toolbar.vue'
 export default {
     name: 'UserView',
@@ -17,7 +17,7 @@ export default {
         }
     },
     components: {
-        create,
+        createUser,
         toolbar
     },  
     methods: {
