@@ -37,9 +37,4 @@ export default {
 </script>
 
 <style>
-h1 {
-    width: 50px;
-    height: 50px;
-    background-color: aqua;
-}
 </style>
