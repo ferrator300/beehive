@@ -1,27 +1,41 @@
 <template>
   <v-app>
     <v-main>
-      <router-view/>
+      <router-view />
     </v-main>
   </v-app>
 </template>
 
+<script>
+export default {
+  name: 'App',
+  mounted() {
+    if (!localStorage.getItem("token_usuari")) {
+      this.$router.push("/");
+    }
+  }
+}
+
+</script>
+
 <style>
 :root {
-  --honeyA : #241305;
-  --honeyB : #764214;
-  --honeyC : #a86327;
-  --honeyD : #d1b649;
-  --honeyE : #cbbf73;
-  --honeyF : #e9e978;
+  --honeyA: #241305;
+  --honeyB: #764214;
+  --honeyC: #a86327;
+  --honeyD: #d1b649;
+  --honeyE: #cbbf73;
+  --honeyF: #e9e978;
 }
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Nunito', 'Arial';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
 }
+
 nav {
   padding: 30px;
 }
@@ -33,5 +47,9 @@ nav a {
 
 nav a.router-link-exact-active {
   color: #42b983;
+}
+
+h1 {
+  font-family: 'Itim';
 }
 </style>

@@ -8,6 +8,7 @@
       >
         <v-list>
           <v-list-item
+            id="avatar"
             prepend-avatar="../assets/LOGO_Admin.png"
             title="UserGestor"
             subtitle="El que tengo aqui colgado"
@@ -82,7 +83,11 @@ export default {
     border: none;
     background-color: none;
     z-index: unset !important;
-    background-color: var(--honeyF)
+    background-color: var(--honeyF);
+    box-shadow: 1px 1px black;
+}
+#toolbar img {
+  object-fit: contain;
 }
 #footer{
   width: 100%;
