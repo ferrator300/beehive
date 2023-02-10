@@ -1,7 +1,7 @@
 <template>
-    <svg class="hexagon"  id="hexagon-0-0">
+    <svg class="hexagon"  id="hexagon-0-0" style="width:100px; height: 100px;">
             <polygon points="50,0 94,24 94,76 50,100 6,76 6,24 50,0" style="fill: yellow;"></polygon>
-            <text x="17%" y="35%" text-anchor="middle" alignment-baseline="middle" style="font-size: 12px;">{{input_data}}</text>
+            <text x="45%" y="50%" text-anchor="middle" alignment-baseline="middle" style="font-size: 12px;">{{input_data}}</text>
         </svg>
 </template>
 
