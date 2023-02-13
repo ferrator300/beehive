@@ -21,7 +21,7 @@ export default {
 <style>
 :root {
   --honeyA: #241305;
-  --honeyB: #764214;
+  --honeyB: #8e4f17;
   --honeyC: #a86327;
   --honeyD: #d1b649;
   --honeyE: #cbbf73;

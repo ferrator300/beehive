@@ -1,5 +1,4 @@
 <template>
-    
     <v-layout id="toolbar">
       <v-navigation-drawer
         expand-on-hover
@@ -9,9 +8,9 @@
         <v-list>
           <v-list-item
             id="avatar"
-            prepend-avatar="../assets/LOGO_Admin.png"
-            title="UserGestor"
-            subtitle="El que tengo aqui colgado"
+            :prepend-avatar="avatarPath"
+            :title=nom
+            :subtitle=rol
           ></v-list-item>
         </v-list>
 
@@ -41,10 +40,21 @@ import { RouterLink } from 'vue-router';
 
 export default {
     name: 'toolbarComp',
-    props: ['rol'],
+    props: ['rol', 'nom'],
     components: {
     RouterLink
-},  
+},
+computed: {
+    avatarPath() {
+      if (this.rol == 'Tecnic') {
+        return 'src/assets/LOGO_Tecnic.png';
+      } else if (this.rol == 'Gestor') {
+        return 'src/assets/LOGO_Admin.png';
+      }
+      else
+        return 'src/assets/LOGO_Gestor.png';
+}
+    },
     methods: {
         /* 
             Function: checkRol

@@ -1,10 +1,11 @@
 <template>
-  <toolbar :rol="rol"></toolbar>
-  <div class="fitxa">
-    <tascafitxa v-for="na in llistaTasques" :input_data="na.Nom" @click="enviarTasca(na)" ></tascafitxa>
+  <toolbar :rol="rol" :nom="nom"></toolbar>
+  <div class="fitxa1">
+    <tascafitxa v-for="na in llistaTasques" :input_data="na.Nom" :prioritat="na.Prioritat" @click="enviarTasca(na)" ></tascafitxa>
   </div>
   <footercustom></footercustom>
-  <tascaform :informacio="tascaSeleccionada"></tascaform>
+  <tascaform v-if="isHidden" :informacio="tascaSeleccionada" :usuaris="llistat" @tancar="isHidden=false"></tascaform>
+  
 </template>
 
 <script>
@@ -21,9 +22,12 @@ export default {
   },
   data() {
     return {
-      n : ['a', 'b'],
+      isHidden: false,
       llistaTasques:{},
-      tascaSeleccionada: {}
+      tascaSeleccionada: {},
+      llistat: [],
+      rol: "",
+      nom: ""
     }
   },
   methods: {
@@ -53,21 +57,41 @@ export default {
                     this.llistaTasques = JSON.parse(xmlhttp.responseText);
                 }
                 else {
-                    alert('Error');
+                    alert('Error al recuperar el llistat de Tasques');
                 }
         },
+        llistats(){
+          this.llistarTasques();
+          this.getListUsers();
+          this.rol=localStorage.getItem("Rol");
+          this.nom=localStorage.getItem("NomUsuari");
+        },
         enviarTasca(infoTasca){
+          this.isHidden=true
           this.tascaSeleccionada = infoTasca
-        }
+        },
+        getListUsers() {
+            var userToken = localStorage.getItem("token_usuari");
+            var input = "http://beehive.daw.institutmontilivi.cat/API/Usuari/Llistat";
+
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("PUT", input, false);
+            xmlhttp.setRequestHeader("Content-type", "application/json");
+            xmlhttp.send(JSON.stringify(userToken));
+            if (xmlhttp.status == 200) {
+              var data = JSON.parse(xmlhttp.responseText);
+              this.llistat=data.map(item => item.Email)
+            }
+        },
   },
   mounted(){
-      this.llistarTasques();
+      this.llistats();
   }
 }
 </script>
 
 <style>
-.fitxa {
+.fitxa1 {
   position: absolute;
   width: -webkit-fill-available;
   height: -webkit-fill-available;
