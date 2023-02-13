@@ -29,7 +29,7 @@ export default {
             var output = "";
             var data = {
                 username: userEmail,
-                password: userPassword,
+                password: cryptPswd,
                 token: userToken
             };
             var xmlhttp = new XMLHttpRequest();

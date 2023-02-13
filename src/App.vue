@@ -27,7 +27,9 @@ export default {
   --honeyE: #cbbf73;
   --honeyF: #e9e978;
 }
-
+html {
+  overflow: hidden;
+}
 #app {
   font-family: 'Nunito', 'Arial';
   -webkit-font-smoothing: antialiased;

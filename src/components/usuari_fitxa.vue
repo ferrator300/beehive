@@ -1,5 +1,6 @@
 <template>
-    <usuari_form ></usuari_form>
+    <usuari_form :input_data="'test'" :rol="Tecnic" :action="UPDATE"></usuari_form>
+    
 </template>
 
 <script>
@@ -7,13 +8,12 @@ import usuari_form from '@/components/usuari_form.vue'
 export default {
     name: 'usuari_fitxa',
     props: ['input_data'],
-    data() {
-        return {
-            // nom: this.input_data.nom,
-            // email: this.input_data.email,
-            // rol: this.input_data.rol,
-        }
-    },
+    // data() {
+    //     return {
+    //         rol: 'Tecnic',
+    //         action: 'UPDATE'
+    //     }
+    // },
     components: {
         usuari_form
     },  

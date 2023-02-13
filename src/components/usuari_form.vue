@@ -1,11 +1,17 @@
 <template>
     <v-card id="user_form">
-        <h3>Creació usuari</h3>
-        <v-text-field id="userName" label="Nom"></v-text-field>
-        <v-text-field id="userEmail" label="Email"></v-text-field>
-        <v-text-field id="userPassword" label="Contrasenya" type="password"></v-text-field>
-        <v-text-field :rules="[matchPassword]" id="userPasswordConfirm" label="Confirmar Contrasenya" type="password"></v-text-field>
-        <v-btn @click="createUser()">Crear</v-btn>
+        <v-btn icon="mdi-close" class="user_form_close" @click="close()" />
+        <h3>Creació usuari</h3><br>
+        <v-form validate-on="submit" @submit.prevent model-value="">
+            <v-text-field :rules="[validate]" id="userName" label="Nom">{{ input_data.Nom }}</v-text-field>
+            <v-text-field :rules="[validate]" id="userEmail" label="Email">{{ input_data.Email }}</v-text-field>
+            <v-text-field :rules="[validate]" id="userPassword" label="Contrasenya" type="password"></v-text-field>
+            <v-text-field :rules="[validate, matchPassword]" id="userPasswordConfirm" label="Confirmar Contrasenya"
+                type="password"></v-text-field>
+            <v-btn v-if="!act" type="submit" @click="createU()">Crear</v-btn>
+            <v-btn v-if="act" type="submit" @click="updateUser()">Actualitzar</v-btn>
+            <v-btn v-if="act" type="submit" @click="deleteU()">Eliminar</v-btn>
+        </v-form>
     </v-card>
 
 </template>
@@ -16,27 +22,28 @@ export default {
     props: ['input_data', 'rol', 'action'],
     data() {
         return {
-            // nom: this.input_data.nom,
-            // email: this.input_data.email,
-            // pwsd: this.input_data.pwsd,
+            nom: this.input_data.Nom,
+            email: this.input_data.Email,
+            rol: localStorage.getItem('rol'),
+            act: this.action
         }
     },
     components: {
     },
     methods: {
         /* 
-            Function: delete
+            Function: deleteU
 
             Crida a l’API per a la eliminació d’aquell usuari
 
             Parameters:
                 id - identificador de l'usuari a eliminar
         */
-        // delete(id) {
-        //     var apikey = "";
-        //     var input = "beehive.daw.institutmontilivi.cat/API/Usuari/Eliminar";
-        //     var output = "";
-        // },
+        deleteU() {
+            var input = "beehive.daw.institutmontilivi.cat/API/Usuari/Eliminar";
+            var token = localStorage.getItem('token_usuari');
+            var output = "";
+        },
 
         /* 
             Function: modifyUser
@@ -53,20 +60,20 @@ export default {
         // },
 
         /* 
-            Function: createUser
+            Function: createU
 
             Crida a l’API per a la creació d’un usuari amb la informació recollida del formulari i el token recuperat
 
             Parameters:
                 none
         */
-        createUser() {
+        createU() {
             var input = "http://beehive.daw.institutmontilivi.cat/API/Usuari/Crear";
             var token = localStorage.getItem('token_usuari');
             var data = {
                 username: document.getElementById('userName').value,
                 password: this.encrypt(document.getElementById('userPassword').value),
-                rol: "Tecnic",
+                rol: this.rol,
                 email: document.getElementById('userEmail').value,
                 token: token
             };
@@ -80,7 +87,7 @@ export default {
                 console.log(missatge);
             }
             else {
-                alert("ERROR CRIDA API: No s'ha pogut crear l'usuari");
+                console.log("ERROR CRIDA API: No s'ha pogut crear l'usuari");
             }
 
         },
@@ -88,10 +95,16 @@ export default {
         matchPassword() {
             var pass1 = document.getElementById('userPassword').value;
             var pass2 = document.getElementById('userPasswordConfirm').value;
-            if (pass1 == pass2)
+            if (pass1 == pass2 && pass1 != "")
                 return true;
             else
                 return "Contrasenya no coincideix.";
+        },
+
+        validate(value) {
+            if (value) return true
+
+            return 'Camp obligatori';
         },
 
         /* 
@@ -151,6 +164,10 @@ export default {
             function safe_add(d, _) { var m = (65535 & d) + (65535 & _); return (d >> 16) + (_ >> 16) + (m >> 16) << 16 | 65535 & m; }
             function bit_rol(d, _) { return d << _ | d >>> 32 - _; }
             return MD5(input);
+        },
+
+        close() {
+            this.$emit('tancar');
         }
     }
 }
@@ -164,5 +181,9 @@ export default {
     width: 70%;
     height: 70%;
     padding: 50px;
+}
+.user_form_close {
+    left: 280px;
+    top: -40px;
 }
 </style>

@@ -4,7 +4,7 @@
         <h1>Gestió d'usuaris</h1>
         <div class="content">
             <div class="create">
-                <img src="@/assets/LOGO_Admin.png" />
+                <img src="@/assets/LOGO_Admin.png" @click="createUser()"/>
                 <img src="@/assets/LOGO_Tecnic.png" />
             </div>
             <v-card class="list">
@@ -22,19 +22,20 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody v-for="item in llistat" :key="item">
+                    <tbody v-for="user in llistat" :key="user">
                         <tr id="usuari">
-                            <td>{{ item.Nom }}</td>
-                            <td>{{ item.Email }}</td>
-                            <td v-if="item.Rol == 'Gestor'"><img src="@/assets/LOGO_Admin.png"/></td>
-                            <td v-if="item.Rol == 'Tecnic'"><img src="@/assets/LOGO_Tecnic.png"/></td>
+                            <td>{{ user.Nom }}</td>
+                            <td>{{ user.Email }}</td>
+                            <td v-if="user.Rol == 'Gestor'"><img src="@/assets/LOGO_Admin.png"/></td>
+                            <td v-if="user.Rol == 'Tecnic'"><img src="@/assets/LOGO_Tecnic.png"/></td>
+                            <td><v-btn icon="mdi-pencil" size="x-small" @click="modifyUser(user)"/></td>
                         </tr>
                     </tbody>
                 </v-table>
             </v-card>
         </div>
     </div>
-    <userForm></userForm>
+    <userForm :input_data="userFormData" v-if="showForm" @tancar="showForm = false" :action="modify"></userForm>
     <footercustom></footercustom>
 </template>
 
@@ -49,8 +50,10 @@ export default {
     data() {
         return {
             llistat: {},
-            user: "",
-            rol: ""
+            rol: localStorage.getItem('rol'),
+            showForm: false,
+            userFormData: {},
+            modify : false
         }
     },
     components: {
@@ -61,21 +64,9 @@ export default {
     },
     methods: {
         /* 
-            Function: list
-
-            Crida a l’API per al llistat d’usuaris
-
-            Parameters:
-                none
-        */
-        list() {
-
-        },
-
-        /* 
             Function: getListUsers()
 
-            Recollida de l’informació a la base de dade sper al usuari identificat
+            Crida a l’API per al llistat d’usuaris
 
             Parameters:
                 none
@@ -106,6 +97,9 @@ export default {
         */
         modifyUser(id) {
             console.log(id)
+            this.showForm = true;
+            this.userFormData = id;
+            this.modify = true;
         }
     },
     mounted() {
@@ -167,7 +161,7 @@ div.content .list {
 }
 #usuari img {
     width: 40px;
-    height: 40px;
+    height: auto;
     vertical-align: middle;
 }
 </style>
