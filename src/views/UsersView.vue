@@ -4,8 +4,9 @@
         <h1>Gestió d'usuaris</h1>
         <div class="content">
             <div class="create">
-                <img src="@/assets/LOGO_Admin.png" @click="createUser()"/>
-                <img src="@/assets/LOGO_Tecnic.png" />
+                <h2>Crear usuari</h2><br>
+                <img src="@/assets/LOGO_Admin.png" @click="createUser('Gestor')"/>
+                <img src="@/assets/LOGO_Tecnic.png" @click="createUser('Tecnic')"/>
             </div>
             <v-card class="list">
                 <v-table>
@@ -22,8 +23,9 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody v-for="user in llistat" :key="user">
-                        <tr id="usuari">
+                    <tbody >
+
+                        <tr id="usuari" v-for="user in llistat" :key="user">
                             <td>{{ user.Nom }}</td>
                             <td>{{ user.Email }}</td>
                             <td v-if="user.Rol == 'Gestor'"><img src="@/assets/LOGO_Admin.png"/></td>
@@ -32,10 +34,12 @@
                         </tr>
                     </tbody>
                 </v-table>
+                <v-btn icon="mdi-plus" size="large" @click="openCreator()"/>
             </v-card>
         </div>
     </div>
-    <userForm :input_data="userFormData" v-if="showForm" @tancar="showForm = false" :action="modify"></userForm>
+    <creatorForm v-if="showCreator"></creatorForm>
+    <userForm :input_data="userFormData" :rol="role" :action="modify" v-if="showForm" @tancar="showForm = false"></userForm>
     <footercustom></footercustom>
 </template>
 
@@ -44,6 +48,7 @@ import createUser from '@/components/usuari_fitxa.vue'
 import userForm from '@/components/usuari_form.vue'
 import toolbar from '@/components/toolbar.vue'
 import footercustom from '@/components/footercustom.vue'
+import creatorForm from '@/components/role_selector.vue'
 export default {
     name: 'UserView',
     props: [],
@@ -52,15 +57,18 @@ export default {
             llistat: {},
             rol: localStorage.getItem('rol'),
             showForm: false,
+            showCreator: false,
             userFormData: {},
-            modify : false
+            modify : false,
+            role: ""
         }
     },
     components: {
         createUser,
         userForm,
         toolbar,
-        footercustom
+        footercustom,
+        creatorForm
     },
     methods: {
         /* 
@@ -90,16 +98,38 @@ export default {
         /* 
             Function: modifyUser(id)
 
-            Crida al component de formulari de modificació d’usuari segons el valor del parametre id
+            Crida al component de formulari de modificació d’usuari amb els valors de l'usuari passat per paràmetre
 
             Parameters:
-                id - identificador de l'usuari que volem modificar
+                id - Usuari que volem modificar
         */
         modifyUser(id) {
             console.log(id)
             this.showForm = true;
             this.userFormData = id;
+            this.role = "";
             this.modify = true;
+        },
+         /* 
+            Function: createUser()
+
+            Crida al component de formulari de creació d’usuari
+
+            Parameters:
+                rol - rol de l'usuari que volem crear
+        */
+        createUser(rol) {
+            this.showForm = true;
+            this.userFormData = {};
+            this.role = rol;
+            this.modify = false;
+        },
+        openCreator() {
+            this.showForm = false;
+            this.showCreator = true;
+            this.userFormData = {};
+            this.role = "";
+            this.modify = false; 
         }
     },
     mounted() {

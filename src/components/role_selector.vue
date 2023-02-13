@@ -1,78 +1,44 @@
 <template>
     <v-card id="user_form">
-        <v-btn icon="mdi-close" class="user_form_close" @click="close()" />
-        <h1 v-if="act == false">Creació usuari</h1>
-        <h1 v-if="act">Modificació usuari</h1><br>
-        <v-form validate-on="submit" @submit.prevent model-value="">
-            <v-text-field :rules="[validate]" id="userName" label="Nom" v-model="input_data.Nom"></v-text-field>
-            <v-text-field :rules="[validate]" id="userEmail" label="Email" v-model="input_data.Email"></v-text-field>
-            <v-text-field :rules="[validate]" id="userPassword" label="Contrasenya" type="password"></v-text-field>
-            <v-text-field :rules="[validate, matchPassword]" id="userPasswordConfirm" label="Confirmar Contrasenya" type="password"></v-text-field>
-            <v-text-field id="userRol" label="Rol" v-model="role"></v-text-field>
-            <div class="form_user_btn">
-                <v-btn v-if="act == false" type="submit" @click="createU()">Crear</v-btn>
-                <v-btn v-if="act" type="submit" @click="updateU()">Actualitzar</v-btn>
-                <v-btn v-if="act" type="submit" @click="deleteU()">Eliminar</v-btn>
-            </div>
-        </v-form>
+        <div class="create">
+                <h2>Crear usuari</h2><br>
+                <span>
+                    <h3>Gestor</h3>
+                    <img src="@/assets/LOGO_Admin.png" @click="createUser('Gestor')"/>
+                </span>
+                <span>
+                    <h3>Tecnic</h3>
+                    <img src="@/assets/LOGO_Tecnic.png" @click="createUser('Tecnic')"/>
+                </span>
+        </div>
     </v-card>
 
 </template>
 
 <script>
 export default {
-    name: 'usuari_form',
-    props: ['input_data', 'rol', 'action'],
+    name: 'rol_selector',
+    props: ['input_data'],
     data() {
         return {
-            act: this.action,
-            role: this.rol
+            act: this.action
         }
     },
     components: {
     },
     methods: {
         /* 
-            Function: checkRol
-
-            Funció interna per comprovar si estem passant un Rol per prop
-
-            Parameters:
-                none
-        */
-        checkRol() {
-            if(this.rol == "")
-                return this.input_data.Rol;
-            else
-                return this.rol;
-        },
-        /* 
             Function: deleteU
 
             Crida a l’API per a la eliminació d’aquell usuari
 
             Parameters:
-                none
+                id - identificador de l'usuari a eliminar
         */
         deleteU() {
-            var input = "http://beehive.daw.institutmontilivi.cat/API/Usuari/Eliminar";
-            var data = {
-                email: document.getElementById('userEmail').value,
-                token: localStorage.getItem('token_usuari')
-            };
-
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("PUT", input, false);
-            xmlhttp.setRequestHeader("Content-type", "application/json");
-            xmlhttp.send(JSON.stringify(data));
-            if (xmlhttp.status == 200) {
-                var missatge = JSON.parse(xmlhttp.responseText);
-                console.log(missatge);
-                this.close();
-            }
-            else {
-                console.log("ERROR CRIDA API: No s'ha pogut eliminar l'usuari");
-            }
+            var input = "beehive.daw.institutmontilivi.cat/API/Usuari/Eliminar";
+            var token = localStorage.getItem('token_usuari');
+            var output = "";
         },
 
         /* 
@@ -84,26 +50,9 @@ export default {
                 none
         */
         updateU() {
-            var input = "http://beehive.daw.institutmontilivi.cat/API/Usuari/Editar";
-            var data = {
-                username: this.input_data.Nom,
-                password: this.encrypt(document.getElementById('userPassword').value),
-                rol: this.role,
-                email: this.input_data.Email,
-                token: localStorage.getItem('token_usuari')
-            };
-
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("PUT", input, false);
-            xmlhttp.setRequestHeader("Content-type", "application/json");
-            xmlhttp.send(JSON.stringify(data));
-            if (xmlhttp.status == 200) {
-                var missatge = JSON.parse(xmlhttp.responseText);
-                console.log(missatge);
-            }
-            else {
-                console.log("ERROR CRIDA API: No s'ha pogut modificar l'usuari");
-            }
+            var input = "beehive.daw.institutmontilivi.cat/API/Usuari/Editar";
+            token = localStorage.getItem('token_usuari');
+            var output = "";
         },
 
         /* 
@@ -116,12 +65,13 @@ export default {
         */
         createU() {
             var input = "http://beehive.daw.institutmontilivi.cat/API/Usuari/Crear";
+            var token = localStorage.getItem('token_usuari');
             var data = {
                 username: document.getElementById('userName').value,
                 password: this.encrypt(document.getElementById('userPassword').value),
                 rol: this.rol,
                 email: document.getElementById('userEmail').value,
-                token: localStorage.getItem('token_usuari')
+                token: token
             };
 
             var xmlhttp = new XMLHttpRequest();
@@ -222,10 +172,10 @@ export default {
 <style>
 #user_form {
     position: fixed;
-    top: 10%;
+    top: 15%;
     left: 20%;
     width: 70%;
-    height: 80%;
+    height: 70%;
     padding: 50px;
 }
 
