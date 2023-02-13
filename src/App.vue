@@ -26,6 +26,8 @@ export default {
   --honeyD: #d1b649;
   --honeyE: #cbbf73;
   --honeyF: #e9e978;
+  --honeyG: #FFFFC6;
+  --honeyH: #D58821;
 }
 
 #app {

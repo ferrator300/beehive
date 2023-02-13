@@ -1,7 +1,11 @@
 <template>
-    <v-text-field id="userEmail" label="Email"></v-text-field>
-    <v-text-field id="userPassword" label="Contrasenya" type="password"></v-text-field>
-    <v-btn @click="logIn()">Identificació</v-btn>
+    <div id="login">
+    <h1>Email</h1>
+    <v-text-field variant="solo" id="userEmail" label="Email"></v-text-field>
+    <h1>Contrasenya</h1>
+    <v-text-field variant="solo" id="userPassword" label="Contrasenya" type="password"></v-text-field>
+    <v-btn rounded="pill"  size="x-large" @click="logIn()" id="botolog">Identificació</v-btn>
+    </div>
 </template>
 <script>
 import { RouterLink } from 'vue-router';
@@ -110,5 +114,22 @@ export default {
 </script>
 
 <style>
+#login{
+    -webkit-transition: opacity 2s;
+    transition: opacity 1s;
+    padding: 30px;
+    position: fixed;
+    width: 35%;
+    height: 65%;
+    border-radius: 15px;
+    top: 10%;
+    left: 30%;
+    background-color: var(--honeyH);
+}
+#botolog{
+    top: 20%;
+    color: azure;
+    background-color: black;
 
+}
 </style>

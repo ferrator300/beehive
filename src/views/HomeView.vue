@@ -1,7 +1,7 @@
 <template>
   <toolbar :rol="rol" :nom="nom"></toolbar>
   <div class="fitxa1">
-    <tascafitxa v-for="na in llistaTasques" :input_data="na.Nom" :prioritat="na.Prioritat" @click="enviarTasca(na)" ></tascafitxa>
+    <tascafitxa v-for="na in llistaTasques" :input_data="na.Nom" :prioritat="na.Prioritat" :rol="rol" @click="enviarTasca(na)" ></tascafitxa>
   </div>
   <footercustom></footercustom>
   <tascaform v-if="isHidden" :informacio="tascaSeleccionada" :usuaris="llistat" @tancar="isHidden=false"></tascaform>
