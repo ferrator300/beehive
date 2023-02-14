@@ -11,8 +11,8 @@
 <v-select id="Estat" :items="items" v-model="informacio.Estat" dense solo label="Estat"></v-select>
 <v-textarea id="Comentaris" v-model="informacio.Comentaris" label="Comentaris"></v-textarea>
 <v-select id="Responsable" :items="usuaris" v-model="informacio.Email" dense solo label="Responsable"></v-select>
-<v-btn v-if="rol == 'Tecnic'" @click="actualitzarTasca()">Editar Tasca</v-btn>
-<v-btn v-if="rol == 'Tecnic'" @click="eliminarTasca()">Eliminar Tasca</v-btn>
+<v-btn v-if="rol != 'Tecnic'" @click="actualitzarTasca()">Editar Tasca</v-btn>
+<v-btn v-if="rol != 'Tecnic'" @click="eliminarTasca()">Eliminar Tasca</v-btn>
 </v-card>
 </template>
 

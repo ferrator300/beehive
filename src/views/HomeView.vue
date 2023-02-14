@@ -1,7 +1,10 @@
 <template>
   <toolbar :rol="rol" :nom="nom"></toolbar>
+  <v-btn rounded="pill" size="large" id="perfer" @click="estadoFiltrado = 'todo'">Per Fer</v-btn>
+  <v-btn rounded="pill" size="large" id="enprogres" @click="estadoFiltrado = 'enprogres'">En Progres</v-btn>
+  <v-btn rounded="pill" size="large" id="finalitzar" @click="estadoFiltrado = 'finalitzades'">Finalitzades</v-btn>
   <div class="fitxa1">
-    <tascafitxa v-for="na in llistaTasques" :input_data="na.Nom" :prioritat="na.Prioritat" :rol="rol" @click="enviarTasca(na)" ></tascafitxa>
+    <tascafitxa v-for="na in llistaTasques" :input_data="na.Nom" :prioritat="na.Prioritat" :estat="na.Estat" @click="enviarTasca(na)" ></tascafitxa>
   </div>
   <footercustom></footercustom>
   <tascaform v-if="isHidden" :informacio="tascaSeleccionada" :usuaris="llistat" @tancar="isHidden=false"></tascaform>
@@ -83,6 +86,9 @@ export default {
               this.llistat=data.map(item => item.Email)
             }
         },
+        filtrar(){
+          return this.llistaTasques.filter(tasca => tasca.Estat === 'todo')
+        },
   },
   mounted(){
       this.llistats();
@@ -105,6 +111,39 @@ export default {
 }
 html {
   overflow: hidden;
+}
+#perfer{
+  position: absolute;
+  top: 3%;
+  left: 10%;
+}
+#enprogres{
+  position: absolute;
+  top: 3%;
+  left: 25%;
+}
+#finalitzar{
+  position: absolute;
+  top: 3%;
+  left: 45%;
+}
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #828282;
 }
 
 
