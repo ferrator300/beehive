@@ -1,18 +1,21 @@
 <template>
 <v-card id="tasca_form" v-if="isHidden">
-<h1>Modificar Tasca</h1>
+<h1 v-if="action">Modificar Tasca</h1>
+<h1 v-if="action==false">Crear Tasca</h1>
 <v-btn @click="tancar()" id="boto">X</v-btn>
 <v-text-field v-if="hideId" id="idTasca" type="hidden" v-bind="informacio.IdTasca"></v-text-field>
-<v-text-field id="NomTasca"  v-model="informacio.Nom" label="Nom"></v-text-field>
-<v-textarea id="Descripcio" v-model="informacio.Descripcio" label="Descripció"></v-textarea>
-<v-text-field id="DataInici" v-model="informacio.DataInici" type="datetime-local" label="Data d'Inici"></v-text-field>
-<v-text-field id="DataFi" v-model="informacio.DataFi" type="datetime-local" label="Data Final"></v-text-field>
-<v-slider hint="Prioritat" step="1" thumb-label="hover" max="9" min="1" v-model="informacio.Prioritat" label="Prioritat"></v-slider>
+<v-text-field id="NomTasca"  v-model="informacio.Nom" label="Nom" :disabled="rol === 'Tecnic'"></v-text-field>
+<v-textarea id="Descripcio" v-model="informacio.Descripcio" label="Descripció" :disabled="rol === 'Tecnic'"></v-textarea>
+<v-text-field id="DataInici" v-model="informacio.DataInici" type="datetime-local" label="Data d'Inici" :disabled="rol === 'Tecnic'"></v-text-field>
+<v-text-field id="DataFi" v-model="informacio.DataFi" type="datetime-local" label="Data Final" :disabled="rol === 'Tecnic'"></v-text-field>
+<v-slider id="Prioritat" hint="Prioritat" step="1" thumb-label="hover" max="9" min="1" v-model="informacio.Prioritat" label="Prioritat" :disabled="rol === 'Tecnic'"></v-slider>
 <v-select id="Estat" :items="items" v-model="informacio.Estat" dense solo label="Estat"></v-select>
 <v-textarea id="Comentaris" v-model="informacio.Comentaris" label="Comentaris"></v-textarea>
-<v-select id="Responsable" :items="usuaris" v-model="informacio.Email" dense solo label="Responsable"></v-select>
-<v-btn v-if="rol == 'Tecnic'" @click="actualitzarTasca()">Editar Tasca</v-btn>
-<v-btn v-if="rol == 'Tecnic'" @click="eliminarTasca()">Eliminar Tasca</v-btn>
+<v-select id="Responsable" :items="usuaris" v-model="informacio.Email" dense solo label="Responsable" :disabled="rol === 'Tecnic'"></v-select>
+<v-btn v-if="rol !== 'Tecnic' && action " @click="actualitzarTasca()">Editar Tasca</v-btn>
+<v-btn v-if="rol !== 'Tecnic' && action" @click="eliminarTasca()">Eliminar Tasca</v-btn>
+<v-btn  v-if="action" @click="tramitarTasca()">Tramitar Tasca</v-btn>
+<v-btn  v-if="action==false" @click="crearTasca()">Crear Tasca</v-btn>
 </v-card>
 </template>
 
@@ -20,12 +23,13 @@
 export default {
     hideId: true,
     name: 'tasca_form',
-    props: ['input_data', 'treballadors', 'informacio', 'usuaris', 'rol'],
+    props: ['input_data', 'treballadors', 'informacio', 'usuaris', 'rol','action'],
     data() {
         return {
             isHidden: true,
             items: ['Per Fer', 'En Progres', 'Finalitzada'],
-            usuaris: this.usuaris
+            usuaris: this.usuaris,
+            rol: localStorage.getItem("Rol"),
         }
     },
     components: {
@@ -136,7 +140,97 @@ export default {
             else {
                 alert('Error al Eliminar');
             }
-        }
+        },
+        tramitarTasca(){
+            var id = this.informacio.IdTasca;
+            var tokenUsuari = localStorage.getItem("token_usuari");
+            var estat = this.informacio.Estat;
+            if(estat=="Per Fer"){
+                estat="todo";
+            }
+            else if(estat=="En progres"){
+                estat="ongoing";
+            }
+            else{
+                estat="done";
+            }
+            var comentaris = this.informacio.Comentaris;
+            
+            var url = 'http://beehive.daw.institutmontilivi.cat/API/Tasca/Tramit'
+                
+            var data = {
+            id: id,
+            estat: estat,
+            token: tokenUsuari,
+            comentaris: comentaris
+            };
+            
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("PUT",url,false);
+            xmlhttp.setRequestHeader("Content-type", "application/json"); 
+            xmlhttp.send(JSON.stringify(data));
+            if (xmlhttp.status == 200) {
+                alert('Tramitat Correctament');
+            }
+            else {
+                alert('Error al Tramitar');
+            }
+        },
+        crearTasca(){
+            var nom = document.getElementById("NomTasca").value
+            var desc = document.getElementById("Descripcio").value
+            var datainici = document.getElementById("DataInici").value
+            var datafi = document.getElementById("DataFi").value
+            var estat = document.getElementById("Estat").value
+            if(estat=="Per Fer")
+            {
+                estat="todo";
+            }
+            else if(estat=="En progres")
+            {
+                estat="ongoing";
+            }
+            else if(estat=="Finalitzada")
+            {
+                estat="done";
+            }
+            var prioritat = document.getElementById("Prioritat").value
+            var comentaris = document.getElementById("Comentaris").value
+            var email = document.getElementById("Responsable").value
+            var tokenUsuari = localStorage.getItem("token_usuari");
+
+            if (!nom || !desc || !datainici || !datafi || !estat || !prioritat || !email) {
+                alert('Todos los campos son requeridos');
+                return;
+            }
+
+            var input = 'http://beehive.daw.institutmontilivi.cat/API/Tasca/Crear'
+                
+           var data = {
+            nomTasca: nom,
+            descripcio: desc,
+            dataInici: datainici,
+            dataFi: datafi,
+            estat: estat,
+            prioritat: prioritat,
+            comentaris: comentaris,
+            email: email,
+            token: tokenUsuari
+            };
+            
+            
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("PUT",input,false);
+            xmlhttp.setRequestHeader("Content-type", "application/json"); 
+            xmlhttp.send(JSON.stringify(data));
+            if (xmlhttp.status == 200) {
+                alert('Creat Correctament');
+            }
+            else {
+                alert('Error al Crear');
+            }
+        },
+        
     }
 }
 </script>

@@ -1,9 +1,9 @@
 <template>
     <svg class="hexagon" style="width:200px; height: 200px; filter: drop-shadow(5px 5px 7px black);">
-        <polygon stroke="black" stroke-width="5px" points="100,0 188,48 188,152 100,200 12,152 12,48 100,0" :style="{fill: colorFitxa()}"></polygon>
+        <polygon :stroke="colorFitxa()" stroke-width="5px" points="100,0 188,48 188,152 100,200 12,152 12,48 100,0" style="fill:var(--honeyE)"></polygon>
         <text x="50%" y="50%" text-anchor="middle" alignment-baseline="middle" style="font-size: 16px;">
-        <tspan x="50%" dy="0px">{{input_data}}</tspan>
-        <tspan x="50%" dy="50px">{{prioritat}}</tspan>
+        <tspan x="50%" dy="-25px" style="font-size: 55px;">{{iconesEstat}}</tspan>
+        <tspan x="50%" dy="55px" style="font-weight: bold; font-size: 18px; width: 30px;">{{input_data}}</tspan>
         </text>
     </svg>
 </template>
@@ -12,15 +12,32 @@
 import tasca_form from '@/components/tasca_form.vue'
 export default {
     name: 'tasca_fitxa',
-    props: ['input_data', 'prioritat'],
+    props: ['input_data', 'prioritat', 'estat'],
     data() {
         return {
-            numero: this.prioritat
+            numero: this.prioritat,
         }
     },
     components: {
         tasca_form
-    },  
+    }, 
+    computed: {
+        iconesEstat(){
+        if(this.estat==="todo"){
+            return "⏳";
+        }
+        else if(this.estat==="ongoing"){
+            return "⚙️";
+        }
+        else if(this.estat==="done"){
+            return "✅";
+        }
+        else{
+            return "➕"; 
+        }
+
+    }
+    }, 
     methods: {
         /* 
             Function: openInfo
@@ -37,26 +54,34 @@ export default {
         // }
         colorFitxa() {
       switch (this.numero) {
-        case "0":
-          return "var(--honeyA)"
         case "1":
         case "2":
-          return "var(--honeyE)";
+          return "lightgreen";
         case "3":
         case "4":
-          return "var(--honeyD)";
+          return "gold";
         case "5":
         case "6":
-          return "var(--honeyC)";
+          return "orange";
         case "7":
         case "8":
-          return "var(--honeyB)";
+          return "red";
         case "9":
-          return "var(--honeyB)";
-        default:
-          return 'gray';
+          return "black";
       }
-    }
+    },
+    colorBorder(){
+        if(this.est==="todo"){
+            return "yellow";
+        }
+        else if(this.est==="ongoing"){
+            return "red";
+        }
+        else{
+            return "green";
+        }
+
+    },
     }
 }
 </script>
