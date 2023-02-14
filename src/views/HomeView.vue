@@ -1,13 +1,15 @@
 <template>
   <toolbar :rol="rol" :nom="nom"></toolbar>
-  <v-btn rounded="pill" size="large" id="perfer" @click="estadoFiltrado = 'todo'">Per Fer</v-btn>
-  <v-btn rounded="pill" size="large" id="enprogres" @click="estadoFiltrado = 'enprogres'">En Progres</v-btn>
-  <v-btn rounded="pill" size="large" id="finalitzar" @click="estadoFiltrado = 'finalitzades'">Finalitzades</v-btn>
+  <select id="ordenar"></select>
+  <v-btn rounded="pill" size="large" id="perfer" @click="filtre = 'todo'">Per Fer ⏳</v-btn>
+  <v-btn rounded="pill" size="large" id="enprogres" @click="filtre = 'ongoing'">En Progres ⚙️</v-btn>
+  <v-btn rounded="pill" size="large" id="finalitzar" @click="filtre = 'done'">Finalitzades ✅</v-btn>
   <div class="fitxa1">
-    <tascafitxa v-for="na in llistaTasques" :input_data="na.Nom" :prioritat="na.Prioritat" :estat="na.Estat" @click="enviarTasca(na)" ></tascafitxa>
+    <tascafitxa v-if="rol !== 'Tecnic'" id="crearTasca" :estat="crear" :input_data="crearTasca" :prioritat="crearTascaBorder" @click="afegirTasca()"></tascafitxa>
+    <tascafitxa v-for="na in estadoFiltrado" :input_data="na.Nom" :prioritat="na.Prioritat" :estat="na.Estat" @click="enviarTasca(na)" ></tascafitxa>
   </div>
   <footercustom></footercustom>
-  <tascaform v-if="isHidden" :informacio="tascaSeleccionada" :usuaris="llistat" @tancar="isHidden=false"></tascaform>
+  <tascaform v-if="isHidden" :informacio="tascaSeleccionada" :usuaris="llistat" :action="modify" @tancar="isHidden=false"></tascaform>
   
 </template>
 
@@ -29,9 +31,23 @@ export default {
       llistaTasques:{},
       tascaSeleccionada: {},
       llistat: [],
+      items: ['Prioritat', 'Nom', 'DataFi'],
       rol: "",
-      nom: ""
+      nom: "",
+      crear: "➕",
+      crearTasca: "Crear Tasca",
+      crearTascaBorder: "1",
+      filtre: "",
+      modify: false
     }
+  },
+  computed:{
+    estadoFiltrado(){
+      if(this.filtre == "")
+          return this.llistaTasques
+      else
+        return this.llistaTasques.filter(tasca => tasca.Estat === this.filtre)
+        },
   },
   methods: {
         /* 
@@ -72,6 +88,12 @@ export default {
         enviarTasca(infoTasca){
           this.isHidden=true
           this.tascaSeleccionada = infoTasca
+          this.modify=true
+        },
+        afegirTasca(){
+          this.isHidden=true
+          this.tascaSeleccionada = {}
+          this.modify=false
         },
         getListUsers() {
             var userToken = localStorage.getItem("token_usuari");
@@ -86,9 +108,7 @@ export default {
               this.llistat=data.map(item => item.Email)
             }
         },
-        filtrar(){
-          return this.llistaTasques.filter(tasca => tasca.Estat === 'todo')
-        },
+        
   },
   mounted(){
       this.llistats();
@@ -120,12 +140,20 @@ html {
 #enprogres{
   position: absolute;
   top: 3%;
-  left: 25%;
+  left: 27%;
 }
 #finalitzar{
   position: absolute;
   top: 3%;
   left: 45%;
+}
+#ordenar{
+  position: absolute;
+  top: 3%;
+  left: 50%;
+}
+#creartasca tspan{
+  font-size: 70px;
 }
 ::-webkit-scrollbar {
   width: 10px;
