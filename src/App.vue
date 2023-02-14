@@ -55,5 +55,6 @@ nav a.router-link-exact-active {
 
 h1 {
   font-family: 'Itim';
+  width: -webkit-fill-available;
 }
 </style>

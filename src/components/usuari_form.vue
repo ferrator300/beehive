@@ -1,32 +1,34 @@
 <template>
     <v-card id="user_form">
         <v-btn icon="mdi-close" class="user_form_close" @click="close()" />
-        <h1 v-if="act == false">Creació usuari</h1>
+        <h1 v-if="act == false">Nou {{ rol }}</h1>
         <h1 v-if="act">Modificació usuari</h1><br>
         <v-form validate-on="submit" @submit.prevent model-value="">
             <v-text-field :rules="[validate]" id="userName" label="Nom" v-model="input_data.Nom"></v-text-field>
             <v-text-field :rules="[validate]" id="userEmail" label="Email" v-model="input_data.Email"></v-text-field>
             <v-text-field :rules="[validate]" id="userPassword" label="Contrasenya" type="password"></v-text-field>
             <v-text-field :rules="[validate, matchPassword]" id="userPasswordConfirm" label="Confirmar Contrasenya" type="password"></v-text-field>
-            <v-text-field id="userRol" label="Rol" v-model="role"></v-text-field>
+            <v-text-field id="userRol" label="Rol" v-model="role" style="display: none"></v-text-field>
             <div class="form_user_btn">
                 <v-btn v-if="act == false" type="submit" @click="createU()">Crear</v-btn>
-                <v-btn v-if="act" type="submit" @click="updateU()">Actualitzar</v-btn>
-                <v-btn v-if="act" type="submit" @click="deleteU()">Eliminar</v-btn>
+                <v-btn v-if="act" type="submit" @click="updateU()" color="secondary">Actualitzar</v-btn>
+                <v-btn v-if="act" type="submit" @click="deleteU()" color="error">Eliminar</v-btn>
             </div>
         </v-form>
     </v-card>
 
+
 </template>
 
 <script>
+import { RouterLink } from 'vue-router';
 export default {
     name: 'usuari_form',
     props: ['input_data', 'rol', 'action'],
     data() {
         return {
             act: this.action,
-            role: this.rol
+            role: this.rol,
         }
     },
     components: {
@@ -60,19 +62,17 @@ export default {
                 email: document.getElementById('userEmail').value,
                 token: localStorage.getItem('token_usuari')
             };
-
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.open("PUT", input, false);
             xmlhttp.setRequestHeader("Content-type", "application/json");
             xmlhttp.send(JSON.stringify(data));
             if (xmlhttp.status == 200) {
-                var missatge = JSON.parse(xmlhttp.responseText);
-                console.log(missatge);
                 this.close();
+                this.$emit('snack', ['delete', 'ok']);
             }
-            else {
-                console.log("ERROR CRIDA API: No s'ha pogut eliminar l'usuari");
-            }
+            else 
+                this.$emit('snack', ['delete', 'error']);
+
         },
 
         /* 
@@ -98,12 +98,12 @@ export default {
             xmlhttp.setRequestHeader("Content-type", "application/json");
             xmlhttp.send(JSON.stringify(data));
             if (xmlhttp.status == 200) {
-                var missatge = JSON.parse(xmlhttp.responseText);
-                console.log(missatge);
+                this.close();
+                this.$emit('snack', ['update', 'ok']);
             }
-            else {
-                console.log("ERROR CRIDA API: No s'ha pogut modificar l'usuari");
-            }
+            else 
+                this.$emit('snack', ['update', 'error']);
+
         },
 
         /* 
@@ -129,12 +129,11 @@ export default {
             xmlhttp.setRequestHeader("Content-type", "application/json");
             xmlhttp.send(JSON.stringify(data));
             if (xmlhttp.status == 200) {
-                var missatge = JSON.parse(xmlhttp.responseText);
-                console.log(missatge);
+                this.close();
+                this.$emit('snack', ['create', 'ok']);
             }
-            else {
-                console.log("ERROR CRIDA API: No s'ha pogut crear l'usuari");
-            }
+            else
+                this.$emit('snack', ['create', 'error'])
 
         },
 
@@ -152,34 +151,6 @@ export default {
 
             return 'Camp obligatori';
         },
-
-        /* 
-            Function: checkAction
-
-            Comprovem si estem creant o modificant l’usuari
-
-            Parameters:
-                rol -  nivell d'accés de l'usuari ['Admin, Gestor, Tecnic']
-        */
-        // checkAction(rol) {
-        //     var apikey = "";
-        //     var input = "";
-        //     var output = "";
-        // },
-
-        /* 
-            Function: getToken
-
-            Recuperem el token de la cookie
-
-            Parameters:
-                none
-        */
-        // getToken() {
-        //     var apikey = "";
-        //     var input = "beehive.daw.institutmontilivi.cat/API/Token";
-        //     var output = "";
-        // }
 
         encrypt(input) {
             var MD5 = function (d) { var r = M(V(Y(X(d), 8 * d.length))); return r.toLowerCase(); };
@@ -230,6 +201,7 @@ export default {
 }
 
 .user_form_close {
+    position: relative;
     left: 52%;
     top: -8%;
 }

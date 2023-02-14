@@ -1,15 +1,10 @@
 <template>
-    <toolbar></toolbar>
+    <toolbar :rol="userRol" :nom="userName"></toolbar>
     <div class="fitxa">
         <h1>Gestió d'usuaris</h1>
         <div class="content">
-            <div class="create">
-                <h2>Crear usuari</h2><br>
-                <img src="@/assets/LOGO_Admin.png" @click="createUser('Gestor')"/>
-                <img src="@/assets/LOGO_Tecnic.png" @click="createUser('Tecnic')"/>
-            </div>
             <v-card class="list">
-                <v-table>
+                <v-table id="tableUsers">
                     <thead>
                         <tr>
                             <th>
@@ -21,25 +16,39 @@
                             <th>
                                 Rol
                             </th>
+                            <th></th>
                         </tr>
                     </thead>
-                    <tbody >
-
+                    <tbody>
                         <tr id="usuari" v-for="user in llistat" :key="user">
                             <td>{{ user.Nom }}</td>
                             <td>{{ user.Email }}</td>
-                            <td v-if="user.Rol == 'Gestor'"><img src="@/assets/LOGO_Admin.png"/></td>
-                            <td v-if="user.Rol == 'Tecnic'"><img src="@/assets/LOGO_Tecnic.png"/></td>
-                            <td><v-btn icon="mdi-pencil" size="x-small" @click="modifyUser(user)"/></td>
+                            <td v-if="user.Rol == 'Gestor'"><img src="@/assets/LOGO_Admin.png" /></td>
+                            <td v-if="user.Rol == 'Tecnic'"><img src="@/assets/LOGO_Tecnic.png" /></td>
+                            <td><v-btn id="modifyUser" icon="mdi-pencil" size="x-small" @click="modifyUser(user)" />
+                            </td>
                         </tr>
                     </tbody>
                 </v-table>
-                <v-btn icon="mdi-plus" size="large" @click="openCreator()"/>
+                <v-btn id="createUserBtn" icon="mdi-plus" size="large" @click="openCreator()" />
             </v-card>
         </div>
     </div>
-    <creatorForm v-if="showCreator"></creatorForm>
-    <userForm :input_data="userFormData" :rol="role" :action="modify" v-if="showForm" @tancar="showForm = false"></userForm>
+    <creatorForm v-if="showCreator" @tancarRol="showCreator = false" @tecnic="createUser('Tecnic')"
+        @gestor="createUser('Gestor')"></creatorForm>
+    <userForm :input_data="userFormData" :rol="role" :action="modify" v-if="showForm" @tancar="showForm = false"
+        @snack="snackbarCreator($event, $event1)">
+    </userForm>
+
+    <v-snackbar absolute v-model="snackbar">
+        {{ textSnack }}
+        <template v-slot:actions>
+            <v-btn color="pink" variant="text" @click="snackbar = false">
+                Close
+            </v-btn>
+        </template>
+    </v-snackbar>
+
     <footercustom></footercustom>
 </template>
 
@@ -59,8 +68,12 @@ export default {
             showForm: false,
             showCreator: false,
             userFormData: {},
-            modify : false,
-            role: ""
+            modify: false,
+            role: "",
+            textSnack: "",
+            snackbar: false,
+            userRol: localStorage.getItem('Rol'),
+            userName: localStorage.getItem('NomUsuari')
         }
     },
     components: {
@@ -107,18 +120,19 @@ export default {
             console.log(id)
             this.showForm = true;
             this.userFormData = id;
-            this.role = "";
+            this.role = id.Rol;
             this.modify = true;
         },
-         /* 
-            Function: createUser()
+        /* 
+           Function: createUser()
 
-            Crida al component de formulari de creació d’usuari
+           Crida al component de formulari de creació d’usuari
 
-            Parameters:
-                rol - rol de l'usuari que volem crear
-        */
+           Parameters:
+               rol - rol de l'usuari que volem crear
+       */
         createUser(rol) {
+            this.showCreator = false;
             this.showForm = true;
             this.userFormData = {};
             this.role = rol;
@@ -129,7 +143,31 @@ export default {
             this.showCreator = true;
             this.userFormData = {};
             this.role = "";
-            this.modify = false; 
+            this.modify = false;
+        },
+        snackbarCreator(input) {
+            if (input[0] == 'create') {
+                if (input[1] == 'ok')
+                    this.textSnack = "Usuari creat correctament";
+                else
+                    this.textSnack = "ERROR: No s'ha pogut crear l'usuari";
+                this.snackbar = true;
+            }
+            else if (input[0] == 'delete') {
+                if (input[1] == 'ok')
+                    this.textSnack = "Usuari eliminat correctament";
+                else {
+                    this.textSnack = "ERROR: No s'ha pogut eliminar l'usuari";
+                }
+            }
+            else {
+                if (input[1] == 'ok')
+                    this.textSnack = 'Usuari actualitzat correctament';
+                else {
+                    this.textSnack = "ERROR: No s'ha pogut actualitzar l'usuari";
+                }
+            }
+
         }
     },
     mounted() {
@@ -144,10 +182,11 @@ export default {
     width: -webkit-fill-available;
     height: 90%;
     top: 0%;
-    left: 5%;
+    left: 40px;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    overflow-x: visible;
     flex-wrap: wrap;
 }
 
@@ -165,33 +204,44 @@ div.content .create {
     justify-content: center;
 }
 
-div.create img {
-    widows: 30%;
-    height: 30%;
-    scale: 0.8;
-    filter: drop-shadow(5px 5px 7px black);
-    transition: all 0.5s;
-    cursor: pointer;
-}
-
-div.create img:hover {
-    scale: 0.9;
-}
-
 div.content .list {
     flex-grow: 5;
     padding: 10px;
-    height: 80%;
+    height: 100%;
     align-self: center;
     overflow-y: auto;
 }
-#list td, th {
+
+#list td,
+th {
     text-align: center !important;
     vertical-align: middle !important;
 }
+
 #usuari img {
     width: 40px;
     height: auto;
     vertical-align: middle;
+}
+
+#createUserBtn {
+    position: fixed;
+    left: 48%;
+    top: 78%;
+    opacity: 0.8;
+}
+
+#createUserBtn:hover {
+    opacity: 1;
+}
+
+@keyframes blinking {
+    0% {
+        opacity: 0.2;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 </style>
