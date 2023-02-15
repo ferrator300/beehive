@@ -1,29 +1,59 @@
 <template>
-<v-card id="tasca_form" v-if="isHidden">
-<h1 v-if="action">Modificar Tasca</h1>
-<h1 v-if="action==false">Crear Tasca</h1>
-<v-btn @click="tancar()" id="boto">X</v-btn>
-<v-text-field v-if="hideId" id="idTasca" type="hidden" v-bind="informacio.IdTasca"></v-text-field>
-<v-text-field class="formulari"  v-model="informacio.Nom" label="Nom" :disabled="rol === 'Tecnic'"></v-text-field>
-<v-textarea class="formulari" v-model="informacio.Descripcio" label="Descripció" :disabled="rol === 'Tecnic'"></v-textarea>
-<v-text-field class="formulari" v-model="informacio.DataInici" type="datetime-local" label="Data d'Inici" :disabled="rol === 'Tecnic'"></v-text-field>
-<v-text-field class="formulari" v-model="informacio.DataFi" type="datetime-local" label="Data Final" :disabled="rol === 'Tecnic'"></v-text-field>
-<v-slider class="formulari" hint="Prioritat" step="1" thumb-label="hover" max="9" min="1" v-model="informacio.Prioritat" label="Prioritat" :disabled="rol === 'Tecnic'"></v-slider>
-<v-select class="formulari" :items="items" v-model="informacio.Estat" dense solo label="Estat"></v-select>
-<v-textarea class="formulari" v-model="informacio.Comentaris" label="Comentaris"></v-textarea>
-<v-select class="formulari" :items="usuaris" v-model="informacio.Email" dense solo label="Responsable" :disabled="rol === 'Tecnic'"></v-select>
-<v-btn v-if="rol !== 'Tecnic' && action " @click="actualitzarTasca()" style="margin-left:10px;" color="warning">Editar Tasca</v-btn>
-<v-btn  v-if="action" @click="tramitarTasca()" color="secondary" style="margin-left:10px;">Tramitar Tasca</v-btn>
-<v-btn v-if="rol !== 'Tecnic' && action" color="error" @click="eliminarTasca()" style="margin-left:10px;">Eliminar Tasca</v-btn>
-<v-btn  v-if="action==false" @click="crearTasca()" color="success">Crear Tasca</v-btn>
-</v-card>
+    <v-card id="tasca_form" v-if="isHidden">
+        <h1 v-if="action">Modificar Tasca</h1>
+        <h1 v-if="action == false">Crear Tasca</h1>
+        <span class="form-content">
+            <span class="from-content-vertical">
+
+            </span>
+            <span class="from-content-vertical">
+                
+            </span>
+            <span class="from-content-vertical">
+                
+            </span>
+        </span>
+        <span class="form-content">
+            <span class="from-content-vertical">
+
+            </span>
+            <span class="from-content-vertical">
+                
+            </span>
+            <span class="from-content-vertical">
+                
+            </span>
+        </span>
+        <v-btn @click="tancar()" id="boto">X</v-btn>
+        <v-text-field v-if="hideId" id="idTasca" type="hidden" v-bind="informacio.IdTasca"></v-text-field>
+        <v-text-field class="formulari" v-model="informacio.Nom" label="Nom"
+            :disabled="rol === 'Tecnic'"></v-text-field>
+        <v-textarea class="formulari" v-model="informacio.Descripcio" label="Descripció"
+            :disabled="rol === 'Tecnic'"></v-textarea>
+        <v-text-field class="formulari" v-model="informacio.DataInici" type="datetime-local" label="Data d'Inici"
+            :disabled="rol === 'Tecnic'"></v-text-field>
+        <v-text-field class="formulari" v-model="informacio.DataFi" type="datetime-local" label="Data Final"
+            :disabled="rol === 'Tecnic'"></v-text-field>
+        <v-slider class="formulari" hint="Prioritat" step="1" thumb-label="hover" max="9" min="1"
+            v-model="informacio.Prioritat" label="Prioritat" :disabled="rol === 'Tecnic'"></v-slider>
+        <v-select class="formulari" :items="items" v-model="informacio.Estat" dense solo label="Estat"></v-select>
+        <v-textarea class="formulari" v-model="informacio.Comentaris" label="Comentaris"></v-textarea>
+        <v-select class="formulari" :items="usuaris" v-model="informacio.Email" dense solo label="Responsable"
+            :disabled="rol === 'Tecnic'"></v-select>
+        <v-btn v-if="rol !== 'Tecnic' && action" @click="actualitzarTasca()" style="margin-left:10px;"
+            color="warning">Editar Tasca</v-btn>
+        <v-btn v-if="action" @click="tramitarTasca()" color="secondary" style="margin-left:10px;">Tramitar Tasca</v-btn>
+        <v-btn v-if="rol !== 'Tecnic' && action" color="error" @click="eliminarTasca()"
+            style="margin-left:10px;">Eliminar Tasca</v-btn>
+        <v-btn v-if="action == false" @click="crearTasca()" color="success">Crear Tasca</v-btn>
+    </v-card>
 </template>
 
 <script>
 export default {
     hideId: true,
     name: 'tasca_form',
-    props: ['input_data', 'treballadors', 'informacio', 'usuaris', 'rol','action'],
+    props: ['input_data', 'treballadors', 'informacio', 'usuaris', 'rol', 'action'],
     data() {
         return {
             isHidden: true,
@@ -33,7 +63,7 @@ export default {
         }
     },
     components: {
-    },  
+    },
     methods: {
         /* 
             Function: delete
@@ -76,11 +106,11 @@ export default {
         //     var input = "";
         //     var output = "";
         // }
-        tancar(){
-                this.isHidden = false;
-                this.$emit("tancar")  
+        tancar() {
+            this.isHidden = false;
+            this.$emit("tancar")
         },
-        actualitzarTasca(){
+        actualitzarTasca() {
             var nom = this.informacio.Nom;
             var desc = this.informacio.Descripcio;
             var datainici = this.informacio.DataInici;
@@ -93,24 +123,24 @@ export default {
             var tokenUsuari = localStorage.getItem("token_usuari");
 
             var input = 'http://beehive.daw.institutmontilivi.cat/API/Tasca/Editar'
-                
+
             var data = {
-            id: id,
-            nomTasca: nom,
-            descripcio: desc,
-            dataInici: datainici,
-            dataFi: datafi,
-            estat: estat,
-            prioritat: prioritat,
-            comentaris: comentaris,
-            email: email,
-            token: tokenUsuari
+                id: id,
+                nomTasca: nom,
+                descripcio: desc,
+                dataInici: datainici,
+                dataFi: datafi,
+                estat: estat,
+                prioritat: prioritat,
+                comentaris: comentaris,
+                email: email,
+                token: tokenUsuari
             };
-            
-            
+
+
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("PUT",input,false);
-            xmlhttp.setRequestHeader("Content-type", "application/json"); 
+            xmlhttp.open("PUT", input, false);
+            xmlhttp.setRequestHeader("Content-type", "application/json");
             xmlhttp.send(JSON.stringify(data));
             if (xmlhttp.status == 200) {
                 alert('Editat Correctament');
@@ -119,20 +149,20 @@ export default {
                 alert('Error al Editar');
             }
         },
-        eliminarTasca(){
+        eliminarTasca() {
             var id = this.informacio.IdTasca;
             var tokenUsuari = localStorage.getItem("token_usuari");
-            
+
             var url = 'http://beehive.daw.institutmontilivi.cat/API/Tasca/Eliminar'
-                
+
             var data = {
-            id: id,
-            token: tokenUsuari
+                id: id,
+                token: tokenUsuari
             };
-            
+
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("PUT",url,false);
-            xmlhttp.setRequestHeader("Content-type", "application/json"); 
+            xmlhttp.open("PUT", url, false);
+            xmlhttp.setRequestHeader("Content-type", "application/json");
             xmlhttp.send(JSON.stringify(data));
             if (xmlhttp.status == 200) {
                 alert('Eliminat Correctament');
@@ -142,33 +172,33 @@ export default {
                 alert('Error al Eliminar');
             }
         },
-        tramitarTasca(){
+        tramitarTasca() {
             var id = this.informacio.IdTasca;
             var tokenUsuari = localStorage.getItem("token_usuari");
             var estat = this.informacio.Estat;
-            if(estat=="Per Fer"){
-                estat="todo";
+            if (estat == "Per Fer") {
+                estat = "todo";
             }
-            else if(estat=="En progres"){
-                estat="ongoing";
+            else if (estat == "En progres") {
+                estat = "ongoing";
             }
-            else{
-                estat="done";
+            else {
+                estat = "done";
             }
             var comentaris = this.informacio.Comentaris;
-            
+
             var url = 'http://beehive.daw.institutmontilivi.cat/API/Tasca/Tramit'
-                
+
             var data = {
-            id: id,
-            estat: estat,
-            token: tokenUsuari,
-            comentaris: comentaris
+                id: id,
+                estat: estat,
+                token: tokenUsuari,
+                comentaris: comentaris
             };
-            
+
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("PUT",url,false);
-            xmlhttp.setRequestHeader("Content-type", "application/json"); 
+            xmlhttp.open("PUT", url, false);
+            xmlhttp.setRequestHeader("Content-type", "application/json");
             xmlhttp.send(JSON.stringify(data));
             if (xmlhttp.status == 200) {
                 alert('Tramitat Correctament');
@@ -178,23 +208,20 @@ export default {
                 alert('Error al Tramitar');
             }
         },
-        crearTasca(){
+        crearTasca() {
             var nom = this.informacio.Nom;
             var desc = this.informacio.Descripcio;
             var datainici = this.informacio.DataInici;
             var datafi = this.informacio.DataFi;
             var estat = this.informacio.Estat;
-            if(estat=="Per Fer")
-            {
-                estat="todo";
+            if (estat == "Per Fer") {
+                estat = "todo";
             }
-            else if(estat=="En Progres")
-            {
-                estat="ongoing";
+            else if (estat == "En Progres") {
+                estat = "ongoing";
             }
-            else if(estat=="Finalitzada")
-            {
-                estat="done";
+            else if (estat == "Finalitzada") {
+                estat = "done";
             }
             var prioritat = this.informacio.Prioritat;
             var comentaris = this.informacio.Comentaris;
@@ -207,23 +234,23 @@ export default {
             }
 
             var input = 'http://beehive.daw.institutmontilivi.cat/API/Tasca/Crear'
-                
-           var data = {
-            nomTasca: nom,
-            descripcio: desc,
-            dataInici: datainici,
-            dataFi: datafi,
-            estat: estat,
-            prioritat: prioritat,
-            comentaris: comentaris,
-            email: email,
-            token: tokenUsuari
+
+            var data = {
+                nomTasca: nom,
+                descripcio: desc,
+                dataInici: datainici,
+                dataFi: datafi,
+                estat: estat,
+                prioritat: prioritat,
+                comentaris: comentaris,
+                email: email,
+                token: tokenUsuari
             };
-            
-            
+
+
             var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("PUT",input,false);
-            xmlhttp.setRequestHeader("Content-type", "application/json"); 
+            xmlhttp.open("PUT", input, false);
+            xmlhttp.setRequestHeader("Content-type", "application/json");
             xmlhttp.send(JSON.stringify(data));
             if (xmlhttp.status == 200) {
                 alert('Creat Correctament');
@@ -232,31 +259,33 @@ export default {
                 alert('Error al Crear');
             }
         },
-        
+
     }
 }
 </script>
 
 <style>
 #tasca_form {
-  position: fixed;
-  top:5%;
-  left:10%;
-  width: 85%;
-  height:85%;
-  padding: 50px;
-  overflow: auto;
-  background-color: lightgoldenrodyellow;
+    position: fixed;
+    top: 5%;
+    left: 10%;
+    width: 85%;
+    height: 85%;
+    padding: 50px;
+    overflow: auto;
+    background-color: lightgoldenrodyellow;
 
-  
+
 }
-#boto{
+
+#boto {
     position: fixed;
     top: 6%;
     right: 10%;
 }
-.formulari{
+
+.formulari {
     width: 400px;
-    
+
 }
 </style>
