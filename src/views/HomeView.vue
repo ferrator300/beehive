@@ -55,12 +55,19 @@ export default {
         return this.llistaTasques
       }
       else if(this.filtre == "tot" && this.ordre!=""){
-        if(this.ordre === 'prioritat')
-        return this.llistaTasques.sort((a, b) => Number(a.Prioritat) - Number(b.Prioritat)); 
-        else if(this.ordre === 'nom')
-        return this.llistaTasques.sort((a, b) => a.Nom.localeCompare(b.Nom))
-        else if(this.ordre === 'datafi')
-        return this.llistaTasques.sort((a, b) => new Date(a.DataFi) - new Date(b.DataFi))
+        if(this.ordre === 'prioritat'){
+          this.amagat=true
+          return this.llistaTasques.sort((a, b) => Number(a.Prioritat) - Number(b.Prioritat)); 
+        }
+        else if(this.ordre === 'nom'){
+          this.amagat=true
+          return this.llistaTasques.sort((a, b) => a.Nom.localeCompare(b.Nom))
+        }
+        else if(this.ordre === 'datafi'){
+          this.amagat=true
+          return this.llistaTasques.sort((a, b) => new Date(a.DataFi) - new Date(b.DataFi))
+        }
+        
       }
       else if (this.ordre === 'prioritat') {
         this.amagat=true
