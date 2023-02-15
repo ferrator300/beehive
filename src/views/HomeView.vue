@@ -1,9 +1,15 @@
 <template>
   <toolbar :rol="rol" :nom="nom"></toolbar>
-  <select id="ordenar"></select>
+  <select v-if="amagat" id="ordenar" v-model="ordre">Ordenar per:
+  <option value="prioritat">Prioritat</option>
+  <option value="nom">Nom</option>
+  <option value="datafi">DataFi</option>
+</select>
+<v-select id="ordenar">hola</v-select>
   <v-btn rounded="pill" size="large" id="perfer" @click="filtre = 'todo'">Per Fer ⏳</v-btn>
   <v-btn rounded="pill" size="large" id="enprogres" @click="filtre = 'ongoing'">En Progres ⚙️</v-btn>
   <v-btn rounded="pill" size="large" id="finalitzar" @click="filtre = 'done'">Finalitzades ✅</v-btn>
+  <v-btn rounded="pill" size="large" id="totes" @click="filtre = 'tot'">Totes </v-btn>
   <div class="fitxa1">
     <tascafitxa v-if="rol !== 'Tecnic'" id="crearTasca" :estat="crear" :input_data="crearTasca" :prioritat="crearTascaBorder" @click="afegirTasca()"></tascafitxa>
     <tascafitxa v-for="na in estadoFiltrado" :input_data="na.Nom" :prioritat="na.Prioritat" :estat="na.Estat" @click="enviarTasca(na)" ></tascafitxa>
@@ -38,16 +44,39 @@ export default {
       crearTasca: "Crear Tasca",
       crearTascaBorder: "1",
       filtre: "",
-      modify: false
+      ordre: "prioritat",
+      modify: false,
+      amagat: false
     }
   },
   computed:{
     estadoFiltrado(){
-      if(this.filtre == "")
-          return this.llistaTasques
+      if(this.filtre == ""){
+        return this.llistaTasques
+      }
+      else if(this.filtre == "tot" && this.ordre!=""){
+        if(this.ordre === 'prioritat')
+        return this.llistaTasques.sort((a, b) => Number(a.Prioritat) - Number(b.Prioritat)); 
+        else if(this.ordre === 'nom')
+        return this.llistaTasques.sort((a, b) => a.Nom.localeCompare(b.Nom))
+        else if(this.ordre === 'datafi')
+        return this.llistaTasques.sort((a, b) => new Date(a.DataFi) - new Date(b.DataFi))
+      }
+      else if (this.ordre === 'prioritat') {
+        this.amagat=true
+        let temp = this.llistaTasques.filter(tasca => tasca.Estat === this.filtre)
+        return temp.sort((a, b) => Number(a.Prioritat) - Number(b.Prioritat)); 
+      } else if (this.ordre === 'nom') {
+        this.amagat=true
+        return this.llistaTasques.sort((a, b) => a.Nom.localeCompare(b.Nom)).filter(tasca => tasca.Estat === this.filtre);
+      } else if (this.ordre === 'datafi') {
+        this.amagat=true
+        return this.llistaTasques.sort((a, b) => new Date(a.DataFi) - new Date(b.DataFi)).filter(tasca => tasca.Estat === this.filtre);
+      }
       else
         return this.llistaTasques.filter(tasca => tasca.Estat === this.filtre)
-        },
+
+      },
   },
   methods: {
         /* 
@@ -108,6 +137,9 @@ export default {
               this.llistat=data.map(item => item.Email)
             }
         },
+        canvi(event) {
+         this.filtre = event.target.value;
+        }
         
   },
   mounted(){
@@ -147,10 +179,15 @@ html {
   top: 3%;
   left: 45%;
 }
+#totes{
+  position: absolute;
+  top: 3%;
+  left: 65%;
+}
 #ordenar{
   position: absolute;
   top: 3%;
-  left: 50%;
+  left: 80%;
 }
 #creartasca tspan{
   font-size: 70px;

@@ -23,8 +23,8 @@
           <router-link to="/users">
             <v-list-item prepend-icon="mdi-account-cog" title="Usuaris" value="usuaris"></v-list-item>
           </router-link>
-          <router-link to="/about">
-            <v-list-item prepend-icon="mdi-logout-variant" title="Sortir" value="logout"></v-list-item>
+          <router-link to="/">
+            <v-list-item @click="handleLogout" prepend-icon="mdi-logout-variant" title="Sortir" value="logout"></v-list-item>
           </router-link>
 
         </v-list>
@@ -69,6 +69,9 @@ computed: {
             var input = "";
             var output = "";
         },
+        handleLogout() {
+          localStorage.clear();
+        }
 
         /* 
             Function: buildToolbar
