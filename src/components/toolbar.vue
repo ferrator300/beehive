@@ -14,8 +14,8 @@
         <router-link v-if="role == 'Admin'" to="/users">
           <v-list-item class="link" prepend-icon="mdi-account-cog" title="Usuaris" value="usuaris"></v-list-item>
         </router-link>
-        <router-link to="/about">
-          <v-list-item prepend-icon="mdi-logout-variant" title="Sortir" value="logout"></v-list-item>
+        <router-link to="/">
+          <v-list-item @click="handleLogout" prepend-icon="mdi-logout-variant" title="Sortir" value="logout"></v-list-item>
         </router-link>
 
       </v-list>
@@ -57,14 +57,17 @@ export default {
 
         Comprovació del rol de l’usuari
 
-        Parameters:
-            none
-    */
-    checkRol() {
-      var apikey = "";
-      var input = "";
-      var output = "";
-    },
+            Parameters:
+                none
+        */
+        checkRol() {
+            var apikey = "";
+            var input = "";
+            var output = "";
+        },
+        handleLogout() {
+          localStorage.clear();
+        }
 
   }
 }

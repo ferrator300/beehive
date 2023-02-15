@@ -4,18 +4,18 @@
 <h1 v-if="action==false">Crear Tasca</h1>
 <v-btn @click="tancar()" id="boto">X</v-btn>
 <v-text-field v-if="hideId" id="idTasca" type="hidden" v-bind="informacio.IdTasca"></v-text-field>
-<v-text-field id="NomTasca"  v-model="informacio.Nom" label="Nom" :disabled="rol === 'Tecnic'"></v-text-field>
-<v-textarea id="Descripcio" v-model="informacio.Descripcio" label="Descripció" :disabled="rol === 'Tecnic'"></v-textarea>
-<v-text-field id="DataInici" v-model="informacio.DataInici" type="datetime-local" label="Data d'Inici" :disabled="rol === 'Tecnic'"></v-text-field>
-<v-text-field id="DataFi" v-model="informacio.DataFi" type="datetime-local" label="Data Final" :disabled="rol === 'Tecnic'"></v-text-field>
-<v-slider id="Prioritat" hint="Prioritat" step="1" thumb-label="hover" max="9" min="1" v-model="informacio.Prioritat" label="Prioritat" :disabled="rol === 'Tecnic'"></v-slider>
-<v-select id="Estat" :items="items" v-model="informacio.Estat" dense solo label="Estat"></v-select>
-<v-textarea id="Comentaris" v-model="informacio.Comentaris" label="Comentaris"></v-textarea>
-<v-select id="Responsable" :items="usuaris" v-model="informacio.Email" dense solo label="Responsable" :disabled="rol === 'Tecnic'"></v-select>
-<v-btn v-if="rol !== 'Tecnic' && action " @click="actualitzarTasca()">Editar Tasca</v-btn>
-<v-btn v-if="rol !== 'Tecnic' && action" @click="eliminarTasca()">Eliminar Tasca</v-btn>
-<v-btn  v-if="action" @click="tramitarTasca()">Tramitar Tasca</v-btn>
-<v-btn  v-if="action==false" @click="crearTasca()">Crear Tasca</v-btn>
+<v-text-field class="formulari"  v-model="informacio.Nom" label="Nom" :disabled="rol === 'Tecnic'"></v-text-field>
+<v-textarea class="formulari" v-model="informacio.Descripcio" label="Descripció" :disabled="rol === 'Tecnic'"></v-textarea>
+<v-text-field class="formulari" v-model="informacio.DataInici" type="datetime-local" label="Data d'Inici" :disabled="rol === 'Tecnic'"></v-text-field>
+<v-text-field class="formulari" v-model="informacio.DataFi" type="datetime-local" label="Data Final" :disabled="rol === 'Tecnic'"></v-text-field>
+<v-slider class="formulari" hint="Prioritat" step="1" thumb-label="hover" max="9" min="1" v-model="informacio.Prioritat" label="Prioritat" :disabled="rol === 'Tecnic'"></v-slider>
+<v-select class="formulari" :items="items" v-model="informacio.Estat" dense solo label="Estat"></v-select>
+<v-textarea class="formulari" v-model="informacio.Comentaris" label="Comentaris"></v-textarea>
+<v-select class="formulari" :items="usuaris" v-model="informacio.Email" dense solo label="Responsable" :disabled="rol === 'Tecnic'"></v-select>
+<v-btn v-if="rol !== 'Tecnic' && action " @click="actualitzarTasca()" style="margin-left:10px;" color="warning">Editar Tasca</v-btn>
+<v-btn  v-if="action" @click="tramitarTasca()" color="secondary" style="margin-left:10px;">Tramitar Tasca</v-btn>
+<v-btn v-if="rol !== 'Tecnic' && action" color="error" @click="eliminarTasca()" style="margin-left:10px;">Eliminar Tasca</v-btn>
+<v-btn  v-if="action==false" @click="crearTasca()" color="success">Crear Tasca</v-btn>
 </v-card>
 </template>
 
@@ -136,6 +136,7 @@ export default {
             xmlhttp.send(JSON.stringify(data));
             if (xmlhttp.status == 200) {
                 alert('Eliminat Correctament');
+                this.$router.push("portada");
             }
             else {
                 alert('Error al Eliminar');
@@ -171,22 +172,23 @@ export default {
             xmlhttp.send(JSON.stringify(data));
             if (xmlhttp.status == 200) {
                 alert('Tramitat Correctament');
+                this.$router.push("portada");
             }
             else {
                 alert('Error al Tramitar');
             }
         },
         crearTasca(){
-            var nom = document.getElementById("NomTasca").value
-            var desc = document.getElementById("Descripcio").value
-            var datainici = document.getElementById("DataInici").value
-            var datafi = document.getElementById("DataFi").value
-            var estat = document.getElementById("Estat").value
+            var nom = this.informacio.Nom;
+            var desc = this.informacio.Descripcio;
+            var datainici = this.informacio.DataInici;
+            var datafi = this.informacio.DataFi;
+            var estat = this.informacio.Estat;
             if(estat=="Per Fer")
             {
                 estat="todo";
             }
-            else if(estat=="En progres")
+            else if(estat=="En Progres")
             {
                 estat="ongoing";
             }
@@ -194,9 +196,9 @@ export default {
             {
                 estat="done";
             }
-            var prioritat = document.getElementById("Prioritat").value
-            var comentaris = document.getElementById("Comentaris").value
-            var email = document.getElementById("Responsable").value
+            var prioritat = this.informacio.Prioritat;
+            var comentaris = this.informacio.Comentaris;
+            var email = this.informacio.Email;
             var tokenUsuari = localStorage.getItem("token_usuari");
 
             if (!nom || !desc || !datainici || !datafi || !estat || !prioritat || !email) {
@@ -252,5 +254,9 @@ export default {
     position: fixed;
     top: 6%;
     right: 10%;
+}
+.formulari{
+    width: 400px;
+    
 }
 </style>
