@@ -116,16 +116,14 @@ export default {
     -webkit-transition: opacity 2s;
     transition: opacity 1s;
     padding: 30px;
-    position: fixed;
-    width: 35%;
-    height: 65%;
+    height: 100%;
     border-radius: 15px;
-    top: 10%;
-    left: 30%;
     background-color: var(--honeyH);
+    transform: translateX(0px);
+    transition: transform 5s ease-in-out
 }
 #botolog{
-    top: 20%;
+    /* top: 20%; */
     color: azure;
     background-color: black;
 

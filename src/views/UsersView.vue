@@ -25,7 +25,8 @@
                             <td>{{ user.Email }}</td>
                             <td v-if="user.Rol == 'Gestor'"><img src="@/assets/LOGO_Admin.png" /></td>
                             <td v-if="user.Rol == 'Tecnic'"><img src="@/assets/LOGO_Tecnic.png" /></td>
-                            <td><v-btn class="btn" id="modifyUser" icon="mdi-pencil" size="x-small" @click="modifyUser(user)" />
+                            <td><v-btn class="btn" id="modifyUser" icon="mdi-pencil" size="x-small"
+                                    @click="modifyUser(user)" />
                             </td>
                         </tr>
                     </tbody>
@@ -179,6 +180,9 @@ export default {
     },
     mounted() {
         this.getListUsers();
+        if (!localStorage.getItem("token_usuari") || localStorage.getItem["token_usuari"] != "Admin") {
+            this.$router.push("portada");
+        }
     }
 }
 </script>
@@ -223,9 +227,11 @@ div.content .create {
     height: 80%;
 }
 
-.list, .list table {
+.list,
+.list table {
     background-color: var(--honeyG);
 }
+
 .list .btn {
     background-color: var(--honeyD);
 }

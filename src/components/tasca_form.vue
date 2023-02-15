@@ -1,51 +1,52 @@
 <template>
     <v-card id="tasca_form" v-if="isHidden">
+        <v-btn id="boto" icon="mdi-close" class="user_form_close" @click="tancar()" />
         <h1 v-if="action">Modificar Tasca</h1>
         <h1 v-if="action == false">Crear Tasca</h1>
         <span class="form-content">
             <span class="from-content-vertical">
-
+                <!--NOM-->
+                <v-text-field class="formulari" v-model="informacio.Nom" label="Nom"
+                    :disabled="rol === 'Tecnic'"></v-text-field>
+                <!--TREBALLADOR-->
+                <v-select class="formulari" :items="usuaris" v-model="informacio.Email" dense solo label="Responsable"
+                    :disabled="rol === 'Tecnic'"></v-select>
             </span>
             <span class="from-content-vertical">
-                
+                <!--DESCRIPCIO-->
+                <v-textarea class="formulari" v-model="informacio.Descripcio" label="Descripció"
+                    :disabled="rol === 'Tecnic'"></v-textarea>
             </span>
             <span class="from-content-vertical">
-                
+                <!--PRIORITAT-->
+                <v-slider class="formulari" hint="Prioritat" step="1" thumb-label="hover" max="9" min="1"
+                    v-model="informacio.Prioritat" label="Prioritat" :disabled="rol === 'Tecnic'"></v-slider>
+                <!--ESTAT-->
+                <v-select class="formulari" :items="items" v-model="informacio.Estat" dense solo
+                    label="Estat"></v-select>
             </span>
         </span>
         <span class="form-content">
             <span class="from-content-vertical">
-
+                <v-text-field class="formulari" v-model="informacio.DataInici" type="datetime-local"
+                    label="Data d'Inici" :disabled="rol === 'Tecnic'"></v-text-field>
+                <v-text-field class="formulari" v-model="informacio.DataFi" type="datetime-local" label="Data Final"
+                    :disabled="rol === 'Tecnic'"></v-text-field>
             </span>
             <span class="from-content-vertical">
-                
+                <v-textarea class="formulari" v-model="informacio.Comentaris" label="Comentaris"></v-textarea>
             </span>
             <span class="from-content-vertical">
-                
+                <v-btn v-if="rol !== 'Tecnic' && action" @click="actualitzarTasca()" style="margin-left:10px;"
+                    color="warning">Editar Tasca</v-btn>
+                <v-btn v-if="action" @click="tramitarTasca()" color="secondary" style="margin-left:10px;">Tramitar
+                    Tasca</v-btn>
+                <v-btn v-if="rol !== 'Tecnic' && action" color="error" @click="eliminarTasca()"
+                    style="margin-left:10px;">Eliminar Tasca</v-btn>
+                <v-btn v-if="action == false" @click="crearTasca()" color="success">Crear Tasca</v-btn>
             </span>
         </span>
-        <v-btn @click="tancar()" id="boto">X</v-btn>
         <v-text-field v-if="hideId" id="idTasca" type="hidden" v-bind="informacio.IdTasca"></v-text-field>
-        <v-text-field class="formulari" v-model="informacio.Nom" label="Nom"
-            :disabled="rol === 'Tecnic'"></v-text-field>
-        <v-textarea class="formulari" v-model="informacio.Descripcio" label="Descripció"
-            :disabled="rol === 'Tecnic'"></v-textarea>
-        <v-text-field class="formulari" v-model="informacio.DataInici" type="datetime-local" label="Data d'Inici"
-            :disabled="rol === 'Tecnic'"></v-text-field>
-        <v-text-field class="formulari" v-model="informacio.DataFi" type="datetime-local" label="Data Final"
-            :disabled="rol === 'Tecnic'"></v-text-field>
-        <v-slider class="formulari" hint="Prioritat" step="1" thumb-label="hover" max="9" min="1"
-            v-model="informacio.Prioritat" label="Prioritat" :disabled="rol === 'Tecnic'"></v-slider>
-        <v-select class="formulari" :items="items" v-model="informacio.Estat" dense solo label="Estat"></v-select>
-        <v-textarea class="formulari" v-model="informacio.Comentaris" label="Comentaris"></v-textarea>
-        <v-select class="formulari" :items="usuaris" v-model="informacio.Email" dense solo label="Responsable"
-            :disabled="rol === 'Tecnic'"></v-select>
-        <v-btn v-if="rol !== 'Tecnic' && action" @click="actualitzarTasca()" style="margin-left:10px;"
-            color="warning">Editar Tasca</v-btn>
-        <v-btn v-if="action" @click="tramitarTasca()" color="secondary" style="margin-left:10px;">Tramitar Tasca</v-btn>
-        <v-btn v-if="rol !== 'Tecnic' && action" color="error" @click="eliminarTasca()"
-            style="margin-left:10px;">Eliminar Tasca</v-btn>
-        <v-btn v-if="action == false" @click="crearTasca()" color="success">Crear Tasca</v-btn>
     </v-card>
 </template>
 
@@ -275,17 +276,38 @@ export default {
     overflow: auto;
     background-color: lightgoldenrodyellow;
 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 40px;
+    overflow-x: hidden;
 
+}
+
+#tasca_form .v-input__control {
+    width: 100%;
 }
 
 #boto {
-    position: fixed;
-    top: 6%;
-    right: 10%;
+    position: absolute;
+    top: 1%;
+    left: 95%;
 }
 
-.formulari {
-    width: 400px;
+@media (min-width: 800px) {
+    .form-content {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        gap: 20px
+    }
 
+    .from-content-vertical {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        justify-content: center;
+    }
 }
 </style>

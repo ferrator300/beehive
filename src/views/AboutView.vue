@@ -13,7 +13,7 @@
 	
   El portal del qual és titular BeeHive conté enllaços a llocs web de tercers, les polítiques de privadesa dels quals són alienes a la de BeeHive. En accedir a aquests llocs web vostè pot decidir si accepta les seves polítiques de privadesa i de cookies. Amb caràcter general, si navega per internet vostè pot acceptar o rebutjar les galetes de tercers des de les opcions de configuració del seu navegador.</h3>
   
-  <img id="imatge" src="src/assets/LOGO_FINAL.svg">
+  <img id="imatge" src="@/assets/LOGO_FINAL.svg">
   </div>
 </template>
 <style>

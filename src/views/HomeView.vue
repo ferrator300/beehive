@@ -1,22 +1,25 @@
 <template>
   <toolbar :rol="rol" :nom="nom"></toolbar>
   <select v-if="amagat" id="ordenar" v-model="ordre">Ordenar per:
-  <option value="prioritat">Prioritat</option>
-  <option value="nom">Nom</option>
-  <option value="datafi">DataFi</option>
-</select>
-<v-select id="ordenar">hola</v-select>
+    <option value="prioritat">Prioritat</option>
+    <option value="nom">Nom</option>
+    <option value="datafi">DataFi</option>
+  </select>
+  <v-select id="ordenar">hola</v-select>
   <v-btn rounded="pill" size="large" id="perfer" @click="filtre = 'todo'">Per Fer ⏳</v-btn>
   <v-btn rounded="pill" size="large" id="enprogres" @click="filtre = 'ongoing'">En Progres ⚙️</v-btn>
   <v-btn rounded="pill" size="large" id="finalitzar" @click="filtre = 'done'">Finalitzades ✅</v-btn>
   <v-btn rounded="pill" size="large" id="totes" @click="filtre = 'tot'">Totes </v-btn>
   <div class="fitxa1">
-    <tascafitxa v-if="rol !== 'Tecnic'" id="crearTasca" :estat="crear" :input_data="crearTasca" :prioritat="crearTascaBorder" @click="afegirTasca()"></tascafitxa>
-    <tascafitxa v-for="na in estadoFiltrado" :input_data="na.Nom" :prioritat="na.Prioritat" :estat="na.Estat" @click="enviarTasca(na)" ></tascafitxa>
+    <tascafitxa v-if="rol !== 'Tecnic'" id="crearTasca" :estat="crear" :input_data="crearTasca"
+      :prioritat="crearTascaBorder" @click="afegirTasca()"></tascafitxa>
+    <tascafitxa v-for="na in estadoFiltrado" :input_data="na.Nom" :prioritat="na.Prioritat" :estat="na.Estat"
+      @click="enviarTasca(na)"></tascafitxa>
   </div>
   <footercustom></footercustom>
-  <tascaform v-if="isHidden" :informacio="tascaSeleccionada" :usuaris="llistat" :action="modify" @tancar="isHidden=false"></tascaform>
-  
+  <tascaform v-if="isHidden" :informacio="tascaSeleccionada" :usuaris="llistat" :action="modify"
+    @tancar="isHidden = false"></tascaform>
+
 </template>
 
 <script>
@@ -29,12 +32,12 @@ import footercustom from '@/components/footercustom.vue'
 export default {
   name: 'HomeView',
   components: {
-    login,  toolbar, tascafitxa, footercustom, tascaform
+    login, toolbar, tascafitxa, footercustom, tascaform
   },
   data() {
     return {
       isHidden: false,
-      llistaTasques:{},
+      llistaTasques: {},
       tascaSeleccionada: {},
       llistat: [],
       items: ['Prioritat', 'Nom', 'DataFi'],
@@ -49,108 +52,111 @@ export default {
       amagat: false
     }
   },
-  computed:{
-    estadoFiltrado(){
-      if(this.filtre == ""){
+  computed: {
+    estadoFiltrado() {
+      if (this.filtre == "") {
         return this.llistaTasques
       }
-      else if(this.filtre == "tot" && this.ordre!=""){
-        if(this.ordre === 'prioritat'){
-          this.amagat=true
-          return this.llistaTasques.sort((a, b) => Number(a.Prioritat) - Number(b.Prioritat)); 
+      else if (this.filtre == "tot" && this.ordre != "") {
+        if (this.ordre === 'prioritat') {
+          this.amagat = true
+          return this.llistaTasques.sort((a, b) => Number(a.Prioritat) - Number(b.Prioritat));
         }
-        else if(this.ordre === 'nom'){
-          this.amagat=true
+        else if (this.ordre === 'nom') {
+          this.amagat = true
           return this.llistaTasques.sort((a, b) => a.Nom.localeCompare(b.Nom))
         }
-        else if(this.ordre === 'datafi'){
-          this.amagat=true
+        else if (this.ordre === 'datafi') {
+          this.amagat = true
           return this.llistaTasques.sort((a, b) => new Date(a.DataFi) - new Date(b.DataFi))
         }
-        
+
       }
       else if (this.ordre === 'prioritat') {
-        this.amagat=true
+        this.amagat = true
         let temp = this.llistaTasques.filter(tasca => tasca.Estat === this.filtre)
-        return temp.sort((a, b) => Number(a.Prioritat) - Number(b.Prioritat)); 
+        return temp.sort((a, b) => Number(a.Prioritat) - Number(b.Prioritat));
       } else if (this.ordre === 'nom') {
-        this.amagat=true
+        this.amagat = true
         return this.llistaTasques.sort((a, b) => a.Nom.localeCompare(b.Nom)).filter(tasca => tasca.Estat === this.filtre);
       } else if (this.ordre === 'datafi') {
-        this.amagat=true
+        this.amagat = true
         return this.llistaTasques.sort((a, b) => new Date(a.DataFi) - new Date(b.DataFi)).filter(tasca => tasca.Estat === this.filtre);
       }
       else
         return this.llistaTasques.filter(tasca => tasca.Estat === this.filtre)
 
-      },
+    },
   },
   methods: {
-        /* 
-            Function: openInfo
+    /* 
+        Function: openInfo
 
-            Mostrem component d’informació, relacionat amb aquella tasca.
+        Mostrem component d’informació, relacionat amb aquella tasca.
 
-            Parameters:
-                none
-        */
-        // openInfo() {
-        //     var apikey = "";
-        //     var input = "";
-        //     var output = "";
-        // }
+        Parameters:
+            none
+    */
+    // openInfo() {
+    //     var apikey = "";
+    //     var input = "";
+    //     var output = "";
+    // }
 
-        llistarTasques() {
-            var userToken = localStorage.getItem("token_usuari");
-            // var apikey = "";
-            var input = "http://beehive.daw.institutmontilivi.cat/API/Tasca/Llistat";
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("POST", input, false);
-            xmlhttp.setRequestHeader("Content-type", "application/json");
-            xmlhttp.send(JSON.stringify(userToken));
-            if (xmlhttp.status == 200) {
-                    this.llistaTasques = JSON.parse(xmlhttp.responseText);
-                }
-                else {
-                    alert('Error al recuperar el llistat de Tasques');
-                }
-        },
-        llistats(){
-          this.llistarTasques();
-          this.getListUsers();
-          this.rol=localStorage.getItem("Rol");
-          this.nom=localStorage.getItem("NomUsuari");
-        },
-        enviarTasca(infoTasca){
-          this.isHidden=true
-          this.tascaSeleccionada = infoTasca
-          this.modify=true
-        },
-        afegirTasca(){
-          this.isHidden=true
-          this.tascaSeleccionada = {}
-          this.modify=false
-        },
-        getListUsers() {
-            var userToken = localStorage.getItem("token_usuari");
-            var input = "http://beehive.daw.institutmontilivi.cat/API/Usuari/Llistat";
+    llistarTasques() {
+      var userToken = localStorage.getItem("token_usuari");
+      // var apikey = "";
+      var input = "http://beehive.daw.institutmontilivi.cat/API/Tasca/Llistat";
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.open("POST", input, false);
+      xmlhttp.setRequestHeader("Content-type", "application/json");
+      xmlhttp.send(JSON.stringify(userToken));
+      if (xmlhttp.status == 200) {
+        this.llistaTasques = JSON.parse(xmlhttp.responseText);
+      }
+      else {
+        alert('Error al recuperar el llistat de Tasques');
+      }
+    },
+    llistats() {
+      this.llistarTasques();
+      this.getListUsers();
+      this.rol = localStorage.getItem("Rol");
+      this.nom = localStorage.getItem("NomUsuari");
+    },
+    enviarTasca(infoTasca) {
+      this.isHidden = true
+      this.tascaSeleccionada = infoTasca
+      this.modify = true
+    },
+    afegirTasca() {
+      this.isHidden = true
+      this.tascaSeleccionada = {}
+      this.modify = false
+    },
+    getListUsers() {
+      var userToken = localStorage.getItem("token_usuari");
+      var input = "http://beehive.daw.institutmontilivi.cat/API/Usuari/Llistat";
 
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("PUT", input, false);
-            xmlhttp.setRequestHeader("Content-type", "application/json");
-            xmlhttp.send(JSON.stringify(userToken));
-            if (xmlhttp.status == 200) {
-              var data = JSON.parse(xmlhttp.responseText);
-              this.llistat=data.map(item => item.Email)
-            }
-        },
-        canvi(event) {
-         this.filtre = event.target.value;
-        }
-        
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.open("PUT", input, false);
+      xmlhttp.setRequestHeader("Content-type", "application/json");
+      xmlhttp.send(JSON.stringify(userToken));
+      if (xmlhttp.status == 200) {
+        var data = JSON.parse(xmlhttp.responseText);
+        this.llistat = data.map(item => item.Email)
+      }
+    },
+    canvi(event) {
+      this.filtre = event.target.value;
+    }
+
   },
-  mounted(){
-      this.llistats();
+  mounted() {
+    this.llistats();
+    if (!localStorage.getItem("token_usuari")) {
+      this.$router.push("home");
+    }
   }
 }
 </script>
@@ -168,37 +174,45 @@ export default {
   /*gap: 20px;*/
   flex-wrap: wrap;
 }
+
 html {
   overflow: hidden;
 }
-#perfer{
+
+#perfer {
   position: absolute;
   top: 3%;
   left: 10%;
 }
-#enprogres{
+
+#enprogres {
   position: absolute;
   top: 3%;
   left: 27%;
 }
-#finalitzar{
+
+#finalitzar {
   position: absolute;
   top: 3%;
   left: 45%;
 }
-#totes{
+
+#totes {
   position: absolute;
   top: 3%;
   left: 65%;
 }
-#ordenar{
+
+#ordenar {
   position: absolute;
   top: 3%;
   left: 80%;
 }
-#creartasca tspan{
+
+#creartasca tspan {
   font-size: 70px;
 }
+
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -217,6 +231,4 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: #828282;
 }
-
-
 </style>

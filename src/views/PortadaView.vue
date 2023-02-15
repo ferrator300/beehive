@@ -1,11 +1,13 @@
 <template>
   <div class="home">
-    <div class="logo" v-bind:style="estilo">
-    <img alt="Vue logo" src="../assets/LOGO_FINAL.svg">
-    <h1 id="titol">BeeHive</h1>
-    </div>
-    <login v-if="isHidden"></login>
-    <v-btn rounded="pill"  size="x-large" @click="tancar()" id="botologin">Login</v-btn>
+    <span class="portada_login">
+      <div class="logo" v-bind:style="estilo">
+        <img alt="Vue logo" src="@/assets/LOGO_FINAL.svg">
+        <h1 id="titol">BeeHive</h1>
+      </div>
+      <login v-if="isHidden"></login>
+    </span>
+    <v-btn v-if="isHidden == false" rounded="pill" size="x-large" @click="tancar()" id="botologin">Login</v-btn>
     <h3 id="copyright">Copyright © 2023 BeeHive Tots els drets reservats</h3>
   </div>
 </template>
@@ -28,55 +30,44 @@ export default {
     }
   },
   methods: {
-    tancar()
-    {
-      this.isHidden = true; 
+    tancar() {
+      this.isHidden = true;
       this.estilo = {
-        transform: 'translateX(-70%)',
+        transform: 'translateX(-40%)',
         transition: 'transform 1s ease-in-out'
-      }
+      };
     },
   }
 }
 </script>
 
 <style>
-  .logo img {
-    position: fixed;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 400px;
-    height: 400px;
-  }
-  #botologin{
-    position: fixed;
-    bottom: 13%;
-    left: 48%;
-    color: azure;
-    background-color: black;
-  }
-  #titol{
-    position: fixed;
-    bottom: 20%;
-    left: 35%;
-    font-size: 75px;
-  }
-  #copyright{
-    position: fixed;
-    bottom: 5%;
-    left: 35%;
-  }
-  .home{
-    width: 100%;
-    height: 100%;
-    background-color: var(--honeyG);
-  }
-  .logo{
-    margin-left: 25%;
-    margin-right: 25%;
-    width: 50%;
-    height: 100%;
-  }
-  
+.logo img {
+  width: 200px;
+}
+.portada_login {
+  display: flex;
+  flex-direction: row;
+}
+
+#botologin {
+  color: azure;
+  background-color: black;
+}
+
+#titol {
+  font-size: 75px;
+}
+
+#copyright {}
+
+.home {
+  background-color: var(--honeyG);
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 50px
+}
 </style>
