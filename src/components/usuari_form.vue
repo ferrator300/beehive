@@ -3,25 +3,22 @@
         <v-btn icon="mdi-close" class="user_form_close" @click="close()" />
         <h1 v-if="act == false">Nou {{ rol }}</h1>
         <h1 v-if="act">Modificació usuari</h1><br>
-        <v-form validate-on="submit" @submit.prevent model-value="">
-            <v-text-field :rules="[validate]" id="userName" label="Nom" v-model="input_data.Nom"></v-text-field>
-            <v-text-field :rules="[validate]" id="userEmail" label="Email" v-model="input_data.Email"></v-text-field>
-            <v-text-field :rules="[validate]" id="userPassword" label="Contrasenya" type="password"></v-text-field>
-            <v-text-field :rules="[validate, matchPassword]" id="userPasswordConfirm" label="Confirmar Contrasenya" type="password"></v-text-field>
-            <v-text-field id="userRol" label="Rol" v-model="role" style="display: none"></v-text-field>
-            <div class="form_user_btn">
-                <v-btn v-if="act == false" type="submit" @click="createU()">Crear</v-btn>
-                <v-btn v-if="act" type="submit" @click="updateU()" color="secondary">Actualitzar</v-btn>
-                <v-btn v-if="act" type="submit" @click="deleteU()" color="error">Eliminar</v-btn>
-            </div>
-        </v-form>
+        <v-text-field id="userName" label="Nom" v-model="input_data.Nom"></v-text-field>
+        <v-text-field id="userEmail" label="Email" v-model="input_data.Email"></v-text-field>
+        <v-text-field id="userPassword" label="Contrasenya" type="password"></v-text-field>
+        <v-text-field id="userPasswordConfirm" label="Confirmar Contrasenya" type="password"></v-text-field>
+        <v-text-field id="userRol" label="Rol" v-model="role" style="display: none"></v-text-field>
+        <div class="form_user_btn">
+            <v-btn v-if="act == false" @click="createU()">Crear</v-btn>
+            <v-btn v-if="act" @click="updateU()" color="secondary">Actualitzar</v-btn>
+            <v-btn v-if="act" @click="deleteU()" color="error">Eliminar</v-btn>
+        </div>
     </v-card>
 
 
 </template>
 
 <script>
-import { RouterLink } from 'vue-router';
 export default {
     name: 'usuari_form',
     props: ['input_data', 'rol', 'action'],
@@ -43,7 +40,7 @@ export default {
                 none
         */
         checkRol() {
-            if(this.rol == "")
+            if (this.rol == "")
                 return this.input_data.Rol;
             else
                 return this.rol;
@@ -70,7 +67,7 @@ export default {
                 this.close();
                 this.$emit('snack', ['delete', 'ok']);
             }
-            else 
+            else
                 this.$emit('snack', ['delete', 'error']);
 
         },
@@ -84,25 +81,28 @@ export default {
                 none
         */
         updateU() {
-            var input = "http://beehive.daw.institutmontilivi.cat/API/Usuari/Editar";
-            var data = {
-                username: this.input_data.Nom,
-                password: this.encrypt(document.getElementById('userPassword').value),
-                rol: this.role,
-                email: this.input_data.Email,
-                token: localStorage.getItem('token_usuari')
-            };
-
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("PUT", input, false);
-            xmlhttp.setRequestHeader("Content-type", "application/json");
-            xmlhttp.send(JSON.stringify(data));
-            if (xmlhttp.status == 200) {
-                this.close();
-                this.$emit('snack', ['update', 'ok']);
+            if (this.validate()) {
+                var input = "http://beehive.daw.institutmontilivi.cat/API/Usuari/Editar";
+                var data = {
+                    username: this.input_data.Nom,
+                    password: this.encrypt(document.getElementById('userPassword').value),
+                    rol: this.role,
+                    email: this.input_data.Email,
+                    token: localStorage.getItem('token_usuari')
+                };
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.open("PUT", input, false);
+                xmlhttp.setRequestHeader("Content-type", "application/json");
+                xmlhttp.send(JSON.stringify(data));
+                if (xmlhttp.status == 200) {
+                    this.close();
+                    this.$emit('snack', ['update', 'ok']);
+                }
+                else
+                    this.$emit('snack', ['update', 'error']);
             }
-            else 
-                this.$emit('snack', ['update', 'error']);
+            else
+                console.log('ERROR Update');
 
         },
 
@@ -115,41 +115,45 @@ export default {
                 none
         */
         createU() {
-            var input = "http://beehive.daw.institutmontilivi.cat/API/Usuari/Crear";
-            var data = {
-                username: document.getElementById('userName').value,
-                password: this.encrypt(document.getElementById('userPassword').value),
-                rol: this.rol,
-                email: document.getElementById('userEmail').value,
-                token: localStorage.getItem('token_usuari')
-            };
+            if (this.validate()) {
+                var input = "http://beehive.daw.institutmontilivi.cat/API/Usuari/Crear";
+                var data = {
+                    username: document.getElementById('userName').value,
+                    password: this.encrypt(document.getElementById('userPassword').value),
+                    rol: this.rol,
+                    email: document.getElementById('userEmail').value,
+                    token: localStorage.getItem('token_usuari')
+                };
 
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("PUT", input, false);
-            xmlhttp.setRequestHeader("Content-type", "application/json");
-            xmlhttp.send(JSON.stringify(data));
-            if (xmlhttp.status == 200) {
-                this.close();
-                this.$emit('snack', ['create', 'ok']);
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.open("PUT", input, false);
+                xmlhttp.setRequestHeader("Content-type", "application/json");
+                xmlhttp.send(JSON.stringify(data));
+                if (xmlhttp.status == 200) {
+                    this.close();
+                    this.$emit('snack', ['create', 'ok']);
+                }
+                else
+                    this.$emit('snack', ['create', 'error'])
             }
             else
-                this.$emit('snack', ['create', 'error'])
-
+                console.log('ERROR Create');
         },
 
-        matchPassword() {
-            var pass1 = document.getElementById('userPassword').value;
-            var pass2 = document.getElementById('userPasswordConfirm').value;
-            if (pass1 == pass2 && pass1 != "")
+        validate() {
+            var name = document.getElementById("userName").value;
+            var email = document.getElementById("userEmail").value;
+            var pass = document.getElementById("userPassword").value;
+            var pass2 = document.getElementById("userPasswordConfirm").value;
+
+            if (!name || !email || !pass || !pass2 || pass2 != pass ) {
+                this.$emit('snack', ['validate', 'ok'])
+                return false;
+            }
+            else {
+                console.log('true')
                 return true;
-            else
-                return "Contrasenya no coincideix.";
-        },
-
-        validate(value) {
-            if (value) return true
-
-            return 'Camp obligatori';
+            }
         },
 
         encrypt(input) {
@@ -198,6 +202,7 @@ export default {
     width: 70%;
     height: 80%;
     padding: 50px;
+    background-color: var(--honeyG);
 }
 
 .user_form_close {

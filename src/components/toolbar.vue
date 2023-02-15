@@ -9,10 +9,10 @@
 
       <v-list density="comfortable" nav>
         <router-link to="/portada">
-          <v-list-item prepend-icon="mdi-home" title="Tasques" value="tasques"></v-list-item>
+          <v-list-item class="link" prepend-icon="mdi-home" title="Tasques" value="tasques"></v-list-item>
         </router-link>
         <router-link v-if="role == 'Admin'" to="/users">
-          <v-list-item prepend-icon="mdi-account-cog" title="Usuaris" value="usuaris"></v-list-item>
+          <v-list-item class="link" prepend-icon="mdi-account-cog" title="Usuaris" value="usuaris"></v-list-item>
         </router-link>
         <router-link to="/about">
           <v-list-item prepend-icon="mdi-logout-variant" title="Sortir" value="logout"></v-list-item>
@@ -71,9 +71,21 @@ export default {
 </script>
 
 <style>
-a {
+
+nav {
+  padding: 30px;
+}
+
+nav a {
+  font-weight: bold;
+  color: var(--honeyA);
   text-decoration: none;
 }
+
+nav a.router-link-exact-active {
+  color: var(--honeyG);
+}
+
 #toolbar {
   height: 100%;
   border: none;

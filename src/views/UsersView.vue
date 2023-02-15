@@ -2,7 +2,7 @@
     <toolbar :rol="userRol" :nom="userName"></toolbar>
     <div class="fitxa">
         <h1>Gestió d'usuaris</h1>
-        <div class="content">
+        <div class="contentList">
             <v-card class="list">
                 <v-table id="tableUsers">
                     <thead>
@@ -25,12 +25,12 @@
                             <td>{{ user.Email }}</td>
                             <td v-if="user.Rol == 'Gestor'"><img src="@/assets/LOGO_Admin.png" /></td>
                             <td v-if="user.Rol == 'Tecnic'"><img src="@/assets/LOGO_Tecnic.png" /></td>
-                            <td><v-btn id="modifyUser" icon="mdi-pencil" size="x-small" @click="modifyUser(user)" />
+                            <td><v-btn class="btn" id="modifyUser" icon="mdi-pencil" size="x-small" @click="modifyUser(user)" />
                             </td>
                         </tr>
                     </tbody>
                 </v-table>
-                <v-btn id="createUserBtn" icon="mdi-plus" size="large" @click="openCreator()" />
+                <v-btn class="btn" id="createUserBtn" icon="mdi-plus" size="large" @click="openCreator()" />
             </v-card>
         </div>
     </div>
@@ -159,13 +159,20 @@ export default {
                 else {
                     this.textSnack = "ERROR: No s'ha pogut eliminar l'usuari";
                 }
+                this.snackbar = true;
             }
-            else {
+            else if (input[0] == 'update') {
                 if (input[1] == 'ok')
                     this.textSnack = 'Usuari actualitzat correctament';
                 else {
                     this.textSnack = "ERROR: No s'ha pogut actualitzar l'usuari";
                 }
+                this.snackbar = true;
+            }
+            else if (input[0] == 'validate') {
+                if (input[1] == 'ok')
+                    this.textSnack = "Has d'omplir tots els camps";
+                this.snackbar = true;
             }
 
         }
@@ -180,22 +187,24 @@ export default {
 .fitxa {
     position: absolute;
     width: -webkit-fill-available;
-    height: 90%;
-    top: 0%;
+    height: 100%;
+    top: 2%;
     left: 40px;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    overflow-x: visible;
     flex-wrap: wrap;
 }
 
-div.content {
+div.contentList {
     display: flex;
-    flex-direction: row;
+    overflow-y: auto;
+    width: -webkit-fill-available;
     flex-grow: 5;
-    gap: 100px;
-    padding: 25px;
+    align-items: flex-start;
+    align-content: stretch;
+    justify-content: center;
+    flex-grow: 5;
 }
 
 div.content .create {
@@ -204,15 +213,24 @@ div.content .create {
     justify-content: center;
 }
 
-div.content .list {
-    flex-grow: 5;
-    padding: 10px;
-    height: 100%;
-    align-self: center;
+.list {
     overflow-y: auto;
+    width: -webkit-fill-available;
+    width: 100%;
+    margin: 20px;
+    margin-left: 40px;
+    overflow-y: auto;
+    height: 80%;
 }
 
-#list td,
+.list, .list table {
+    background-color: var(--honeyG);
+}
+.list .btn {
+    background-color: var(--honeyD);
+}
+
+.list td,
 th {
     text-align: center !important;
     vertical-align: middle !important;
@@ -228,20 +246,10 @@ th {
     position: fixed;
     left: 48%;
     top: 78%;
-    opacity: 0.8;
+    opacity: 0.5;
 }
 
 #createUserBtn:hover {
     opacity: 1;
-}
-
-@keyframes blinking {
-    0% {
-        opacity: 0.2;
-    }
-
-    100% {
-        opacity: 1;
-    }
 }
 </style>
