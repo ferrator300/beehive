@@ -4,10 +4,10 @@
       <div class="logo" v-bind:style="estilo">
         <img alt="Vue logo" src="@/assets/LOGO_FINAL.svg">
         <h1 id="titol">BeeHive</h1>
+        <v-btn rounded="pill" size="x-large" @click="tancar()" id="botologin">Login</v-btn>
       </div>
       <login v-if="isHidden"></login>
     </span>
-    <v-btn v-if="isHidden == false" rounded="pill" size="x-large" @click="tancar()" id="botologin">Login</v-btn>
     <h3 id="copyright">Copyright © 2023 BeeHive Tots els drets reservats</h3>
   </div>
 </template>
@@ -25,7 +25,7 @@ export default {
     return {
       isHidden: false,
       estilo: {
-        transform: 'translateX(0)'
+        transform: 'rotate(0deg)'
       }
     }
   },
@@ -33,8 +33,8 @@ export default {
     tancar() {
       this.isHidden = true;
       this.estilo = {
-        transform: 'translateX(-40%)',
-        transition: 'transform 1s ease-in-out'
+        opacity: '0',
+        transition: 'all 0.5s ease-in-out'
       };
     },
   }
@@ -46,8 +46,12 @@ export default {
   width: 200px;
 }
 .portada_login {
-  display: flex;
-  flex-direction: row;
+  position: fixed;
+}
+
+#copyright {
+  position: fixed;
+    top: 90%;
 }
 
 #botologin {
@@ -58,8 +62,6 @@ export default {
 #titol {
   font-size: 75px;
 }
-
-#copyright {}
 
 .home {
   background-color: var(--honeyG);

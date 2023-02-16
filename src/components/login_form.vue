@@ -1,10 +1,10 @@
 <template>
     <div id="login">
     <h1>Email</h1>
-    <v-text-field variant="solo" id="userEmail" label="Email"></v-text-field>
+    <v-text-field variant="solo" id="userEmail" label="Email"  @keyup.enter="logIn()"></v-text-field>
     <h1>Contrasenya</h1>
-    <v-text-field variant="solo" id="userPassword" label="Contrasenya" type="password"></v-text-field>
-    <v-btn rounded="pill"  size="x-large" @click="logIn()" id="botolog">Identificació</v-btn>
+    <v-text-field variant="solo" id="userPassword" label="Contrasenya" type="password"  @keyup.enter="logIn()"></v-text-field>
+    <v-btn rounded="pill"  size="x-large" @click="logIn()"  id="botolog">Identificació</v-btn>
     </div>
 </template>
 <script>
@@ -113,19 +113,20 @@ export default {
 
 <style>
 #login{
-    -webkit-transition: opacity 2s;
-    transition: opacity 1s;
-    padding: 30px;
-    height: 100%;
+    padding: 50px;
     border-radius: 15px;
     background-color: var(--honeyH);
-    transform: translateX(0px);
-    transition: transform 5s ease-in-out
+    position: fixed;
+    top: 25%;
+    animation: op 1s ease-in;
 }
 #botolog{
-    /* top: 20%; */
     color: azure;
     background-color: black;
-
+}
+@keyframes op {
+    0% {opacity: 0}
+    50%{opacity: 0.5}
+    100%{opacity: 1}
 }
 </style>
