@@ -72,8 +72,7 @@ export default {
       else if (this.filtre == "tot" && this.ordre != "") {
         if (this.ordre === 'prioritat') {
           this.amagat = true
-          this.llistaTasques.sort((a, b) => Number(a.Prioritat) - Number(b.Prioritat));
-          return this.llistaTasques.reverse();
+          return this.llistaTasques.sort((a, b) => Number(a.Prioritat) - Number(b.Prioritat));
         }
         else if (this.ordre === 'nom') {
           this.amagat = true
@@ -88,9 +87,8 @@ export default {
       else if (this.ordre === 'prioritat') {
         this.amagat = true
         let temp = this.llistaTasques.filter(tasca => tasca.Estat === this.filtre)
-        temp.sort((a, b) => Number(a.Prioritat) - Number(b.Prioritat));
-        return this.llistaTasques.reverse();
-
+        return temp.sort((a, b) => Number(a.Prioritat) - Number(b.Prioritat));
+        
       } else if (this.ordre === 'nom') {
         this.amagat = true
         return this.llistaTasques.sort((a, b) => a.Nom.localeCompare(b.Nom)).filter(tasca => tasca.Estat === this.filtre);
