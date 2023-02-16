@@ -48,7 +48,7 @@ export default {
                 this.$router.push("portada");
             }
             else {
-                alert('Login Incorrecte');
+                console.log('Login Incorrecte');
             }
         },
         /*

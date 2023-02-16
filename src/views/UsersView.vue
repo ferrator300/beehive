@@ -25,8 +25,8 @@
                             <td>{{ user.Email }}</td>
                             <td v-if="user.Rol == 'Gestor'"><img src="@/assets/LOGO_Admin.png" /></td>
                             <td v-if="user.Rol == 'Tecnic'"><img src="@/assets/LOGO_Tecnic.png" /></td>
-                            <td><v-btn class="btn" id="modifyUser" icon="mdi-pencil" size="x-small"
-                                    @click="modifyUser(user)" />
+                            <td><v-btn class="btn" id="modifyUser" size="x-small"
+                                    @click="modifyUser(user)">Nou usuari</v-btn>
                             </td>
                         </tr>
                     </tbody>
@@ -230,10 +230,6 @@ th {
     position: fixed;
     left: 48%;
     top: 78%;
-    opacity: 0.5;
 }
 
-#createUserBtn:hover {
-    opacity: 1;
-}
 </style>

@@ -310,7 +310,7 @@ export default {
 #boto {
     position: absolute;
     top: 1%;
-    left: 94%;
+    left: 1%;
 }
 
 @media (min-width: 800px) {
