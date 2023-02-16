@@ -184,7 +184,7 @@ export default {
             xmlhttp.send(JSON.stringify(data));
             if (xmlhttp.status == 200) {
                 alert('Eliminat Correctament');
-                this.$router.push("portada");
+                // this.$router.push("portada");
             }
             else {
                 alert('Error al Eliminar');
@@ -223,7 +223,7 @@ export default {
             xmlhttp.send(JSON.stringify(data));
             if (xmlhttp.status == 200) {
                 alert('Tramitat Correctament');
-                this.$router.push("portada");
+                // this.$router.push("portada");
             }
             else {
                 alert('Error al Tramitar');
@@ -301,6 +301,7 @@ export default {
     justify-content: space-between;
     gap: 40px;
     overflow-x: hidden;
+    z-index: 2000;
 
 }
 
@@ -311,7 +312,7 @@ export default {
 #boto {
     position: absolute;
     top: 1%;
-    left: 95%;
+    left: 94%;
 }
 
 @media (min-width: 800px) {

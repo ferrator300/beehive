@@ -147,40 +147,14 @@ export default {
             this.modify = false;
         },
         snackbarCreator(input) {
-            if (input[0] == 'create') {
-                if (input[1] == 'ok')
-                    this.textSnack = "Usuari creat correctament";
-                else
-                    this.textSnack = "ERROR: No s'ha pogut crear l'usuari";
-                this.snackbar = true;
-            }
-            else if (input[0] == 'delete') {
-                if (input[1] == 'ok')
-                    this.textSnack = "Usuari eliminat correctament";
-                else {
-                    this.textSnack = "ERROR: No s'ha pogut eliminar l'usuari";
-                }
-                this.snackbar = true;
-            }
-            else if (input[0] == 'update') {
-                if (input[1] == 'ok')
-                    this.textSnack = 'Usuari actualitzat correctament';
-                else {
-                    this.textSnack = "ERROR: No s'ha pogut actualitzar l'usuari";
-                }
-                this.snackbar = true;
-            }
-            else if (input[0] == 'validate') {
-                if (input[1] == 'ok')
-                    this.textSnack = "Has d'omplir tots els camps";
-                this.snackbar = true;
-            }
-
+            this.textSnack = input;
+            this.snackbar = true;
         }
+
     },
     mounted() {
         this.getListUsers();
-        if (!localStorage.getItem("token_usuari") || localStorage.getItem["token_usuari"] != "Admin") {
+        if (!localStorage.getItem("token_usuari") || localStorage.getItem('Rol') != 'Admin') {
             this.$router.push("portada");
         }
     }

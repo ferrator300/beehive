@@ -1,15 +1,17 @@
 <template>
   <toolbar :rol="rol" :nom="nom"></toolbar>
-  <select v-if="amagat" id="ordenar" v-model="ordre">Ordenar per:
-    <option value="prioritat">Prioritat</option>
-    <option value="nom">Nom</option>
-    <option value="datafi">DataFi</option>
-  </select>
-  <v-select id="ordenar">hola</v-select>
-  <v-btn rounded="pill" size="large" id="perfer" @click="filtre = 'todo'">Per Fer ⏳</v-btn>
-  <v-btn rounded="pill" size="large" id="enprogres" @click="filtre = 'ongoing'">En Progres ⚙️</v-btn>
-  <v-btn rounded="pill" size="large" id="finalitzar" @click="filtre = 'done'">Finalitzades ✅</v-btn>
-  <v-btn rounded="pill" size="large" id="totes" @click="filtre = 'tot'">Totes </v-btn>
+  <div class="superior">
+    <v-btn class="filterbtn" rounded="pill" size="large" id="perfer" @click="filtre = 'todo'">Per Fer ⏳</v-btn>
+    <v-btn class="filterbtn" rounded="pill" size="large" id="enprogres" @click="filtre = 'ongoing'">En Progres ⚙️</v-btn>
+    <v-btn class="filterbtn" rounded="pill" size="large" id="finalitzar" @click="filtre = 'done'">Finalitzades ✅</v-btn>
+    <v-btn class="filterbtn" rounded="pill" size="large" id="totes" @click="filtre = 'tot'">Totes </v-btn>
+    
+    <select class="filterbtn" title="Ordenar per" v-if="amagat" id="ordenar" v-model="ordre">
+      <option value="prioritat">Prioritat</option>
+      <option value="nom">Nom</option>
+      <option value="datafi">DataFi</option>
+    </select>
+  </div>
   <div class="fitxa1">
     <tascafitxa v-if="rol !== 'Tecnic'" id="crearTasca" :estat="crear" :input_data="crearTasca"
       :prioritat="crearTascaBorder" @click="afegirTasca()"></tascafitxa>
@@ -60,7 +62,8 @@ export default {
       else if (this.filtre == "tot" && this.ordre != "") {
         if (this.ordre === 'prioritat') {
           this.amagat = true
-          return this.llistaTasques.sort((a, b) => Number(a.Prioritat) - Number(b.Prioritat));
+          this.llistaTasques.sort((a, b) => Number(a.Prioritat) - Number(b.Prioritat));
+          return this.llistaTasques.reverse();
         }
         else if (this.ordre === 'nom') {
           this.amagat = true
@@ -75,7 +78,9 @@ export default {
       else if (this.ordre === 'prioritat') {
         this.amagat = true
         let temp = this.llistaTasques.filter(tasca => tasca.Estat === this.filtre)
-        return temp.sort((a, b) => Number(a.Prioritat) - Number(b.Prioritat));
+        temp.sort((a, b) => Number(a.Prioritat) - Number(b.Prioritat));
+        return this.llistaTasques.reverse();
+
       } else if (this.ordre === 'nom') {
         this.amagat = true
         return this.llistaTasques.sort((a, b) => a.Nom.localeCompare(b.Nom)).filter(tasca => tasca.Estat === this.filtre);
@@ -103,43 +108,43 @@ export default {
     //     var output = "";
     // }
 
-        llistarTasques() {
-            var userToken = localStorage.getItem("token_usuari");
-            // var apikey = "";
-            var input = "http://beehive.daw.institutmontilivi.cat/API/Tasca/Llistat";
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("POST", input, false);
-            xmlhttp.setRequestHeader("Content-type", "application/json");
-            xmlhttp.send(JSON.stringify(userToken));
-            if (xmlhttp.status == 200) {
-                    this.llistaTasques = JSON.parse(xmlhttp.responseText);
-                }
-                else {
-                    alert('Error al recuperar el llistat de Tasques');
-                }
-        },
-        llistats(){
-          this.rol=localStorage.getItem("Rol");
-          this.nom=localStorage.getItem("NomUsuari");
-          this.llistarTasques();
-          if(this.rol!='Tecnic'){
-            this.getListUsers();
-          }
-         
-        },
-        enviarTasca(infoTasca){
-          this.isHidden=true
-          this.tascaSeleccionada = infoTasca
-          this.modify=true
-        },
-        afegirTasca(){
-          this.isHidden=true
-          this.tascaSeleccionada = {}
-          this.modify=false
-        },
-        getListUsers() {
-            var userToken = localStorage.getItem("token_usuari");
-            var input = "http://beehive.daw.institutmontilivi.cat/API/Usuari/Llistat";
+    llistarTasques() {
+      var userToken = localStorage.getItem("token_usuari");
+      // var apikey = "";
+      var input = "http://beehive.daw.institutmontilivi.cat/API/Tasca/Llistat";
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.open("POST", input, false);
+      xmlhttp.setRequestHeader("Content-type", "application/json");
+      xmlhttp.send(JSON.stringify(userToken));
+      if (xmlhttp.status == 200) {
+        this.llistaTasques = JSON.parse(xmlhttp.responseText);
+      }
+      else {
+        alert('Error al recuperar el llistat de Tasques');
+      }
+    },
+    llistats() {
+      this.rol = localStorage.getItem("Rol");
+      this.nom = localStorage.getItem("NomUsuari");
+      this.llistarTasques();
+      if (this.rol != 'Tecnic') {
+        this.getListUsers();
+      }
+
+    },
+    enviarTasca(infoTasca) {
+      this.isHidden = true
+      this.tascaSeleccionada = infoTasca
+      this.modify = true
+    },
+    afegirTasca() {
+      this.isHidden = true
+      this.tascaSeleccionada = {}
+      this.modify = false
+    },
+    getListUsers() {
+      var userToken = localStorage.getItem("token_usuari");
+      var input = "http://beehive.daw.institutmontilivi.cat/API/Usuari/Llistat";
 
       var xmlhttp = new XMLHttpRequest();
       xmlhttp.open("PUT", input, false);
@@ -165,51 +170,46 @@ export default {
 </script>
 
 <style>
+.filterbtn {
+  background-color: var(--honeyG);
+}
+#ordenar {
+  padding: 11px;
+  border-radius: 50px;
+  width: 150px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0px 3px 1px -2px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)), 0px 2px 2px 0px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.14)), 0px 1px 5px 0px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.12));
+}
+
+.superior {
+  display: flex;
+  width: -webkit-fill-available;
+  position: absolute;
+  top: 10px;
+  left: 65px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+  align-items: center;
+  z-index: 900;
+}
+
 .fitxa1 {
   position: absolute;
   width: -webkit-fill-available;
-  height: -webkit-fill-available;
+  height: 85%;
   margin: 5px;
   top: 10%;
-  left: 10%;
-  /*display: flex;*/
+  left: 6%;
   overflow-y: auto;
-  /*gap: 20px;*/
-  flex-wrap: wrap;
+  border-radius: 20px;
+  padding: 20px;
 }
 
 html {
   overflow: hidden;
-}
-
-#perfer {
-  position: absolute;
-  top: 3%;
-  left: 10%;
-}
-
-#enprogres {
-  position: absolute;
-  top: 3%;
-  left: 27%;
-}
-
-#finalitzar {
-  position: absolute;
-  top: 3%;
-  left: 45%;
-}
-
-#totes {
-  position: absolute;
-  top: 3%;
-  left: 65%;
-}
-
-#ordenar {
-  position: absolute;
-  top: 3%;
-  left: 80%;
 }
 
 #creartasca tspan {
