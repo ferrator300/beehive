@@ -116,10 +116,13 @@ export default {
                 }
         },
         llistats(){
-          this.llistarTasques();
-          this.getListUsers();
           this.rol=localStorage.getItem("Rol");
           this.nom=localStorage.getItem("NomUsuari");
+          this.llistarTasques();
+          if(this.rol!='Tecnic'){
+            this.getListUsers();
+          }
+         
         },
         enviarTasca(infoTasca){
           this.isHidden=true
