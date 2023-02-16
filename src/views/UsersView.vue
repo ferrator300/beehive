@@ -154,8 +154,12 @@ export default {
     },
     mounted() {
         this.getListUsers();
-        if (!localStorage.getItem("token_usuari") || localStorage.getItem('Rol') != 'Admin') {
+        if (localStorage.getItem('Rol') != 'Admin') {
             this.$router.push("portada");
+        }
+        if (!localStorage.getItem("token_usuari") || localStorage.getItem('expire_time') < Date.now()) {
+            localStorage.clear();
+            this.$router.push("/");
         }
     }
 }

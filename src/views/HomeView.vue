@@ -178,8 +178,9 @@ export default {
   },
   mounted() {
     this.llistats();
-    if (!localStorage.getItem("token_usuari")) {
-      this.$router.push("home");
+    if (!localStorage.getItem("token_usuari") || localStorage.getItem('expire_time') < Date.now()) {
+      localStorage.clear();
+      this.$router.push("/");
     }
   }
 }
