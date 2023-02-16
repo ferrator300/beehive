@@ -25,13 +25,13 @@
                             <td>{{ user.Email }}</td>
                             <td v-if="user.Rol == 'Gestor'"><img src="@/assets/LOGO_Admin.png" /></td>
                             <td v-if="user.Rol == 'Tecnic'"><img src="@/assets/LOGO_Tecnic.png" /></td>
-                            <td><v-btn class="btn" id="modifyUser" size="x-small"
-                                    @click="modifyUser(user)">Nou usuari</v-btn>
+                            <td><v-btn class="btn" id="modifyUser" icon="mdi-pencil" size="x-small"
+                                    @click="modifyUser(user)" />
                             </td>
                         </tr>
                     </tbody>
                 </v-table>
-                <v-btn class="btn" id="createUserBtn" icon="mdi-plus" size="large" @click="openCreator()" />
+                <v-btn class="btn" id="createUserBtn" size="large" @click="openCreator()">Nou Usuari</v-btn>
             </v-card>
         </div>
     </div>
@@ -229,7 +229,8 @@ th {
 #createUserBtn {
     position: fixed;
     left: 48%;
-    top: 78%;
+    top: 87%;
 }
+
 
 </style>
