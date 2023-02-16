@@ -18,9 +18,17 @@
     <tascafitxa v-for="na in estadoFiltrado" :input_data="na.Nom" :prioritat="na.Prioritat" :estat="na.Estat"
       @click="enviarTasca(na)"></tascafitxa>
   </div>
+  <v-snackbar absolute v-model="snackbar">
+        {{ textSnack }}
+        <template v-slot:actions>
+            <v-btn color="pink" variant="text" @click="snackbar = false">
+                Close
+            </v-btn>
+        </template>
+    </v-snackbar>
   <footercustom></footercustom>
   <tascaform v-if="isHidden" :informacio="tascaSeleccionada" :usuaris="llistat" :action="modify"
-    @tancar="isHidden = false"></tascaform>
+    @tancar="isHidden = false" @snack="snackbarCreator($event)"></tascaform>
 
 </template>
 
@@ -51,7 +59,9 @@ export default {
       filtre: "",
       ordre: "prioritat",
       modify: false,
-      amagat: false
+      amagat: false,
+      textSnack: "",
+      snackbar: false,
     }
   },
   computed: {
@@ -108,43 +118,45 @@ export default {
     //     var output = "";
     // }
 
-    llistarTasques() {
-      var userToken = localStorage.getItem("token_usuari");
-      // var apikey = "";
-      var input = "http://beehive.daw.institutmontilivi.cat/API/Tasca/Llistat";
-      var xmlhttp = new XMLHttpRequest();
-      xmlhttp.open("POST", input, false);
-      xmlhttp.setRequestHeader("Content-type", "application/json");
-      xmlhttp.send(JSON.stringify(userToken));
-      if (xmlhttp.status == 200) {
-        this.llistaTasques = JSON.parse(xmlhttp.responseText);
-      }
-      else {
-        alert('Error al recuperar el llistat de Tasques');
-      }
-    },
-    llistats() {
-      this.rol = localStorage.getItem("Rol");
-      this.nom = localStorage.getItem("NomUsuari");
-      this.llistarTasques();
-      if (this.rol != 'Tecnic') {
-        this.getListUsers();
-      }
-
-    },
-    enviarTasca(infoTasca) {
-      this.isHidden = true
-      this.tascaSeleccionada = infoTasca
-      this.modify = true
-    },
-    afegirTasca() {
-      this.isHidden = true
-      this.tascaSeleccionada = {}
-      this.modify = false
-    },
-    getListUsers() {
-      var userToken = localStorage.getItem("token_usuari");
-      var input = "http://beehive.daw.institutmontilivi.cat/API/Usuari/Llistat";
+        llistarTasques() {
+            var userToken = localStorage.getItem("token_usuari");
+            // var apikey = "";
+            var input = "http://beehive.daw.institutmontilivi.cat/API/Tasca/Llistat";
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("POST", input, false);
+            xmlhttp.setRequestHeader("Content-type", "application/json");
+            xmlhttp.send(JSON.stringify(userToken));
+            if (xmlhttp.status == 200) {
+                    this.llistaTasques = JSON.parse(xmlhttp.responseText);
+                }
+                else {
+                    this.snackbarCreator("ERROR, Algú més esta utilitzant aquest compte o s'ha caducat la Sessió");
+                    localStorage.clear();
+                    this.$router.push("/");
+                }
+        },
+        llistats(){
+          this.rol=localStorage.getItem("Rol");
+          this.nom=localStorage.getItem("NomUsuari");
+          this.llistarTasques();
+          if(this.rol!='Tecnic'){
+            this.getListUsers();
+          }
+         
+        },
+        enviarTasca(infoTasca){
+          this.isHidden=true
+          this.tascaSeleccionada = infoTasca
+          this.modify=true
+        },
+        afegirTasca(){
+          this.isHidden=true
+          this.tascaSeleccionada = {}
+          this.modify=false
+        },
+        getListUsers() {
+            var userToken = localStorage.getItem("token_usuari");
+            var input = "http://beehive.daw.institutmontilivi.cat/API/Usuari/Llistat";
 
       var xmlhttp = new XMLHttpRequest();
       xmlhttp.open("PUT", input, false);
@@ -157,7 +169,11 @@ export default {
     },
     canvi(event) {
       this.filtre = event.target.value;
-    }
+    },
+    snackbarCreator(input) {
+            this.textSnack = input;
+            this.snackbar = true;
+        }
 
   },
   mounted() {
