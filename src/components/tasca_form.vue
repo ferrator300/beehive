@@ -136,7 +136,7 @@ export default {
             var tokenUsuari = localStorage.getItem("token_usuari");
 
             if (!nom || !desc || !datainici || !datafi || !estat || !prioritat || !email) {
-                alert('Todos los campos son requeridos');
+                this.$emit('snack',"Has d'emplenar tots els camps!!");
                 return;
             }
 
@@ -161,10 +161,10 @@ export default {
             xmlhttp.setRequestHeader("Content-type", "application/json");
             xmlhttp.send(JSON.stringify(data));
             if (xmlhttp.status == 200) {
-                alert('Editat Correctament');
+                this.$emit('snack', "Tasca Editada Correctament");
             }
             else {
-                alert('Error al Editar');
+                this.$emit('snack',"ERROR al Editar la Tasca");
             }
         },
         eliminarTasca() {
@@ -183,11 +183,10 @@ export default {
             xmlhttp.setRequestHeader("Content-type", "application/json");
             xmlhttp.send(JSON.stringify(data));
             if (xmlhttp.status == 200) {
-                alert('Eliminat Correctament');
-                this.$router.push("portada");
+                this.$emit('snack', "Tasca Eliminada Correctament");
             }
             else {
-                alert('Error al Eliminar');
+                this.$emit('snack',"ERROR al Eliminar la Tasca");
             }
         },
         tramitarTasca() {
@@ -222,11 +221,10 @@ export default {
             xmlhttp.setRequestHeader("Content-type", "application/json");
             xmlhttp.send(JSON.stringify(data));
             if (xmlhttp.status == 200) {
-                alert('Tramitat Correctament');
-                this.$router.push("portada");
+                this.$emit('snack', "Tasca Tramitada Correctament");
             }
             else {
-                alert('Error al Tramitar');
+                this.$emit('snack',"ERROR al Tramitar la Tasca");
             }
         },
         crearTasca() {
@@ -250,7 +248,7 @@ export default {
             var tokenUsuari = localStorage.getItem("token_usuari");
 
             if (!nom || !desc || !datainici || !datafi || !estat || !prioritat || !email) {
-                alert('Todos los campos son requeridos');
+                this.$emit('snack',"Has d'emplenar tots els camps!!");
                 return;
             }
 
@@ -274,10 +272,10 @@ export default {
             xmlhttp.setRequestHeader("Content-type", "application/json");
             xmlhttp.send(JSON.stringify(data));
             if (xmlhttp.status == 200) {
-                alert('Creat Correctament');
+                this.$emit('snack', "Tasca Creada Correctament");
             }
             else {
-                alert('Error al Crear');
+                this.$emit('snack',"ERROR al Crear la Tasca");
             }
         },
 

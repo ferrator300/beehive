@@ -16,9 +16,17 @@
     <tascafitxa v-for="na in estadoFiltrado" :input_data="na.Nom" :prioritat="na.Prioritat" :estat="na.Estat"
       @click="enviarTasca(na)"></tascafitxa>
   </div>
+  <v-snackbar absolute v-model="snackbar">
+        {{ textSnack }}
+        <template v-slot:actions>
+            <v-btn color="pink" variant="text" @click="snackbar = false">
+                Close
+            </v-btn>
+        </template>
+    </v-snackbar>
   <footercustom></footercustom>
   <tascaform v-if="isHidden" :informacio="tascaSeleccionada" :usuaris="llistat" :action="modify"
-    @tancar="isHidden = false"></tascaform>
+    @tancar="isHidden = false" @snack="snackbarCreator($event)"></tascaform>
 
 </template>
 
@@ -49,7 +57,9 @@ export default {
       filtre: "",
       ordre: "prioritat",
       modify: false,
-      amagat: false
+      amagat: false,
+      textSnack: "",
+      snackbar: false,
     }
   },
   computed: {
@@ -115,7 +125,9 @@ export default {
                     this.llistaTasques = JSON.parse(xmlhttp.responseText);
                 }
                 else {
-                    alert('Error al recuperar el llistat de Tasques');
+                    this.snackbarCreator("ERROR, Algú més esta utilitzant aquest compte o s'ha caducat la Sessió");
+                    localStorage.clear();
+                    this.$router.push("/");
                 }
         },
         llistats(){
@@ -152,7 +164,11 @@ export default {
     },
     canvi(event) {
       this.filtre = event.target.value;
-    }
+    },
+    snackbarCreator(input) {
+            this.textSnack = input;
+            this.snackbar = true;
+        }
 
   },
   mounted() {
