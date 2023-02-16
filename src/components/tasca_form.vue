@@ -117,11 +117,28 @@ export default {
             var datainici = this.informacio.DataInici;
             var datafi = this.informacio.DataFi;
             var estat = this.informacio.Estat;
+            if(estat=="Per Fer")
+            {
+                estat="todo";
+            }
+            else if(estat=="En Progres")
+            {
+                estat="ongoing";
+            }
+            else if(estat=="Finalitzada")
+            {
+                estat="done";
+            }
             var prioritat = this.informacio.Prioritat;
             var comentaris = this.informacio.Comentaris;
             var email = this.informacio.Email;
             var id = this.informacio.IdTasca;
             var tokenUsuari = localStorage.getItem("token_usuari");
+
+            if (!nom || !desc || !datainici || !datafi || !estat || !prioritat || !email) {
+                alert('Todos los campos son requeridos');
+                return;
+            }
 
             var input = 'http://beehive.daw.institutmontilivi.cat/API/Tasca/Editar'
 
@@ -177,14 +194,17 @@ export default {
             var id = this.informacio.IdTasca;
             var tokenUsuari = localStorage.getItem("token_usuari");
             var estat = this.informacio.Estat;
-            if (estat == "Per Fer") {
-                estat = "todo";
+            if(estat=="Per Fer")
+            {
+                estat="todo";
             }
-            else if (estat == "En progres") {
-                estat = "ongoing";
+            else if(estat=="En Progres")
+            {
+                estat="ongoing";
             }
-            else {
-                estat = "done";
+            else if(estat=="Finalitzada")
+            {
+                estat="done";
             }
             var comentaris = this.informacio.Comentaris;
 

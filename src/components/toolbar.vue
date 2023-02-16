@@ -28,6 +28,9 @@
 
 <script>
 import { RouterLink } from 'vue-router';
+import LOGO_Tecnic from '@/assets/LOGO_Tecnic.png';
+import LOGO_Admin from '@/assets/LOGO_Admin.png';
+import LOGO_Gestor from '@/assets/LOGO_Gestor.png';
 
 export default {
   name: 'toolbarComp',
@@ -39,21 +42,27 @@ export default {
   },
   components: {
     RouterLink
-  },
-  computed: {
-    avatarPath() {
-      if (this.rol == 'Tecnic') {
-        return 'src/assets/LOGO_Tecnic.png';
-      } else if (this.rol == 'Gestor') {
-        return 'src/assets/LOGO_Admin.png';
+},
+data(){
+  return{
+    img: '@/assets/LOGO_Admin.png' 
+    
+  }
+},
+computed: {
+  avatarPath() {
+      if (this.rol === 'Tecnic') {
+        return LOGO_Tecnic;
+      } else if (this.rol === 'Gestor') {
+        return LOGO_Admin;
+      } else {
+        return LOGO_Gestor;
       }
-      else
-        return 'src/assets/LOGO_Gestor.png';
     }
   },
-  methods: {
-    /* 
-        Function: checkRol
+    methods: {
+        /* 
+            Function: checkRol
 
         Comprovació del rol de l’usuari
 

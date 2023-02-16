@@ -103,40 +103,43 @@ export default {
     //     var output = "";
     // }
 
-    llistarTasques() {
-      var userToken = localStorage.getItem("token_usuari");
-      // var apikey = "";
-      var input = "http://beehive.daw.institutmontilivi.cat/API/Tasca/Llistat";
-      var xmlhttp = new XMLHttpRequest();
-      xmlhttp.open("POST", input, false);
-      xmlhttp.setRequestHeader("Content-type", "application/json");
-      xmlhttp.send(JSON.stringify(userToken));
-      if (xmlhttp.status == 200) {
-        this.llistaTasques = JSON.parse(xmlhttp.responseText);
-      }
-      else {
-        alert('Error al recuperar el llistat de Tasques');
-      }
-    },
-    llistats() {
-      this.llistarTasques();
-      this.getListUsers();
-      this.rol = localStorage.getItem("Rol");
-      this.nom = localStorage.getItem("NomUsuari");
-    },
-    enviarTasca(infoTasca) {
-      this.isHidden = true
-      this.tascaSeleccionada = infoTasca
-      this.modify = true
-    },
-    afegirTasca() {
-      this.isHidden = true
-      this.tascaSeleccionada = {}
-      this.modify = false
-    },
-    getListUsers() {
-      var userToken = localStorage.getItem("token_usuari");
-      var input = "http://beehive.daw.institutmontilivi.cat/API/Usuari/Llistat";
+        llistarTasques() {
+            var userToken = localStorage.getItem("token_usuari");
+            // var apikey = "";
+            var input = "http://beehive.daw.institutmontilivi.cat/API/Tasca/Llistat";
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("POST", input, false);
+            xmlhttp.setRequestHeader("Content-type", "application/json");
+            xmlhttp.send(JSON.stringify(userToken));
+            if (xmlhttp.status == 200) {
+                    this.llistaTasques = JSON.parse(xmlhttp.responseText);
+                }
+                else {
+                    alert('Error al recuperar el llistat de Tasques');
+                }
+        },
+        llistats(){
+          this.rol=localStorage.getItem("Rol");
+          this.nom=localStorage.getItem("NomUsuari");
+          this.llistarTasques();
+          if(this.rol!='Tecnic'){
+            this.getListUsers();
+          }
+         
+        },
+        enviarTasca(infoTasca){
+          this.isHidden=true
+          this.tascaSeleccionada = infoTasca
+          this.modify=true
+        },
+        afegirTasca(){
+          this.isHidden=true
+          this.tascaSeleccionada = {}
+          this.modify=false
+        },
+        getListUsers() {
+            var userToken = localStorage.getItem("token_usuari");
+            var input = "http://beehive.daw.institutmontilivi.cat/API/Usuari/Llistat";
 
       var xmlhttp = new XMLHttpRequest();
       xmlhttp.open("PUT", input, false);
