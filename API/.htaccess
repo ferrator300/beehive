@@ -3,3 +3,6 @@ RewriteBase /API
 Options +FollowSymLinks
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule .* serverAPI.php/$0 [L]
+Header set Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Methods "GET,PUT,POST,DELETE"
+Header set Access-Control-Allow-Headers "Content-Type, Authorization"

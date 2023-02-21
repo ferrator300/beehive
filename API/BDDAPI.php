@@ -146,12 +146,13 @@ class BDD {
 		Returns:
 			Ens retorna l'informació de l'usuari (Nom, Email, Rol)
 	*/
-    public function login($username, $password) {
-        $stmt = $this->conn->prepare("SELECT * FROM Usuari WHERE Nom = :username AND Contrasenya = :password");
-        $stmt->bindParam(':username', $username);
+    public function login($email, $password) {
+        $stmt = $this->conn->prepare("SELECT * FROM Usuari WHERE Email = :email AND Contrasenya = :password");
+        $stmt->bindParam(':email', $email);
         $stmt->bindParam(':password', $password);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+	return $stmt->fetch(PDO::FETCH_ASSOC);
+	
     }
 
     /* 	Function: actualitzarEstat
@@ -165,9 +166,10 @@ class BDD {
 		Returns:
 			True o False depenent si la actualització s'ha fet correctament
 	*/
-    public function actualitzarEstat($estat, $id) {
-        $stmt = $this->conn->prepare("UPDATE Tasca SET Estat = :estat WHERE IdTasca = :id");
+    public function actualitzarEstat($estat, $id, $comentaris) {
+        $stmt = $this->conn->prepare("UPDATE Tasca SET Estat = :estat, Comentaris = :comentaris WHERE IdTasca = :id");
         $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':comentaris', $comentaris);
         $stmt->bindParam(':estat', $estat);
         return $stmt->execute();
     }
@@ -302,7 +304,7 @@ class BDD {
 	*/
     public function llistaUsuaris() {
         try {
-            $stmt = $this->conn->prepare("SELECT Nom, Email, Rol FROM Usuari");
+            $stmt = $this->conn->prepare("SELECT Nom, Email, Rol FROM Usuari WHERE Rol != 'Admin'");
             $stmt->execute();
             $result = $stmt->fetchAll();
             return json_encode($result);
@@ -310,6 +312,7 @@ class BDD {
             echo "Error en la consulta: " . $e->getMessage();
         }
     }
+    
 
     /* 	Function: recuperarUsauri
 		
