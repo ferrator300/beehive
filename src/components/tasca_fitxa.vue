@@ -39,6 +39,8 @@ export default {
     },
     colorFitxa() {
       switch (this.prioritat) {
+        case "0":
+            return "none";
         case "1":
         case "2":
           return "lightgreen";

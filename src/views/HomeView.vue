@@ -1,6 +1,6 @@
 <template>
   <toolbar :rol="rol" :nom="nom"></toolbar>
-  <div class="superior">
+  <div v-if="llistaTasques.length!=0" class="superior" >
     <v-btn class="filterbtn" rounded="pill" size="large" id="perfer" @click="filtre = 'todo'">Per Fer ⏳</v-btn>
     <v-btn class="filterbtn" rounded="pill" size="large" id="enprogres" @click="filtre = 'ongoing'">En Progres ⚙️</v-btn>
     <v-btn class="filterbtn" rounded="pill" size="large" id="finalitzar" @click="filtre = 'done'">Finalitzades ✅</v-btn>
@@ -16,7 +16,7 @@
     <tascafitxa v-if="rol !== 'Tecnic'" id="crearTasca" :estat="crear" :input_data="crearTasca"
       :prioritat="crearTascaBorder" @click="afegirTasca()"></tascafitxa>
       <h1 v-if="llistaTasques.length==0">EEP!! No tens cap Tasca assignada. Torna més Tard</h1>
-    <img v-if="llistaTasques.length==0" src="https://i.pinimg.com/originals/60/48/31/60483168a0149cf0c531c5cddaa0c9ad.png" width="500" height="500">
+    <img v-if="llistaTasques.length==0" src="https://i.pinimg.com/originals/60/48/31/60483168a0149cf0c531c5cddaa0c9ad.png">
     <tascafitxa v-for="na in estadoFiltrado" :input_data="na.Nom" :prioritat="na.Prioritat" :estat="na.Estat"
       @click="enviarTasca(na)"></tascafitxa>
   </div>
@@ -30,7 +30,8 @@
     </v-snackbar>
   <footercustom></footercustom>
   <tascaform v-if="isHidden" :informacio="tascaSeleccionada" :usuaris="llistat" :action="modify"
-    @tancar="isHidden = false" @snack="snackbarCreator($event)"></tascaform>
+  @refrescar="llistarTasques()" @tancar="isHidden = false"  @snack="snackbarCreator($event)"></tascaform>
+    
 
 </template>
 
@@ -56,8 +57,8 @@ export default {
       rol: "",
       nom: "",
       crear: "➕",
-      crearTasca: "Crear Tasca",
-      crearTascaBorder: "1",
+      crearTasca: "Nova Tasca",
+      crearTascaBorder: "0",
       filtre: "",
       ordre: "prioritat",
       modify: false,
@@ -224,13 +225,18 @@ export default {
   border-radius: 20px;
   padding: 20px;
 }
-
+.fitxa1 img {
+  width: auto;
+  height: 500px;
+  filter: drop-shadow(2px 4px 6px black);
+}
 html {
   overflow: hidden;
 }
-
-#creartasca tspan {
-  font-size: 70px;
+#creartasca polygon {
+  border: none !important;
+  stroke-width: 0px !important;
+  fill: var(--honeyH) !important;
 }
 
 ::-webkit-scrollbar {

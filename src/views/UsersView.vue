@@ -31,8 +31,8 @@
                         </tr>
                     </tbody>
                 </v-table>
-                <v-btn class="btn" id="createUserBtn" size="large" @click="openCreator()">Nou Usuari</v-btn>
             </v-card>
+            <v-btn class="btn" id="createUserBtn" size="large" @click="openCreator()">Nou Usuari</v-btn>
         </div>
     </div>
     <creatorForm v-if="showCreator" @tancarRol="showCreator = false" @tecnic="createUser('Tecnic')"
@@ -210,8 +210,13 @@ div.content .create {
     background-color: var(--honeyG);
 }
 
-.list .btn {
-    background-color: var(--honeyD);
+.btn {
+    background-color: var(--honeyE);
+}
+@media (max-width: 800px) {
+    .btn {
+        left: 40%;
+    }
 }
 
 .list td,

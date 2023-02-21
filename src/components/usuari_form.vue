@@ -148,7 +148,7 @@ export default {
             var pass2 = document.getElementById("userPasswordConfirm").value;
 
             if (!name || !email || !pass || !pass2 || pass2 != pass ) {
-                this.$emit('snack', "S'han domplir tots els camps")
+                this.$emit('snack', "S'ha d'omplir tots els camps")
                 return false;
             }
             else {

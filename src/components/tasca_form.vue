@@ -162,6 +162,7 @@ export default {
             xmlhttp.send(JSON.stringify(data));
             if (xmlhttp.status == 200) {
                 this.$emit('snack', "Tasca Editada Correctament");
+                this.$emit('refrescar');
             }
             else {
                 this.$emit('snack',"ERROR al Editar la Tasca");
@@ -184,6 +185,7 @@ export default {
             xmlhttp.send(JSON.stringify(data));
             if (xmlhttp.status == 200) {
                 this.$emit('snack', "Tasca Eliminada Correctament");
+                this.$emit('refrescar');
             }
             else {
                 this.$emit('snack',"ERROR al Eliminar la Tasca");
@@ -222,6 +224,7 @@ export default {
             xmlhttp.send(JSON.stringify(data));
             if (xmlhttp.status == 200) {
                 this.$emit('snack', "Tasca Tramitada Correctament");
+                this.$emit('refrescar');
             }
             else {
                 this.$emit('snack',"ERROR al Tramitar la Tasca");
@@ -273,6 +276,7 @@ export default {
             xmlhttp.send(JSON.stringify(data));
             if (xmlhttp.status == 200) {
                 this.$emit('snack', "Tasca Creada Correctament");
+                this.$emit('refrescar');
             }
             else {
                 this.$emit('snack',"ERROR al Crear la Tasca");

@@ -63,7 +63,12 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: flex-end;
+    align-items: center;
+}
+@media (max-width: 800px) {
+    .create_rol {
+        flex-direction: column;
+    }
 }
 
 .user_form_close {
