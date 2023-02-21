@@ -204,6 +204,7 @@ export default {
     height: 80%;
     padding: 50px;
     background-color: var(--honeyG);
+    overflow-y: auto;
 }
 
 .user_form_close {

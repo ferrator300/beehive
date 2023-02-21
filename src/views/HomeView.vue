@@ -15,6 +15,8 @@
   <div class="fitxa1">
     <tascafitxa v-if="rol !== 'Tecnic'" id="crearTasca" :estat="crear" :input_data="crearTasca"
       :prioritat="crearTascaBorder" @click="afegirTasca()"></tascafitxa>
+      <h1 v-if="llistaTasques.length==0">EEP!! No tens cap Tasca assignada. Torna més Tard</h1>
+    <img v-if="llistaTasques.length==0" src="https://i.pinimg.com/originals/60/48/31/60483168a0149cf0c531c5cddaa0c9ad.png" width="500" height="500">
     <tascafitxa v-for="na in estadoFiltrado" :input_data="na.Nom" :prioritat="na.Prioritat" :estat="na.Estat"
       @click="enviarTasca(na)"></tascafitxa>
   </div>
