@@ -24,16 +24,17 @@ export default {
 nav{
     padding: 0%;
 }
+.v-navigation-drawer {
+  border-style: none;
+  box-shadow: 1px 1px 11px 0px black;
+}
 .v-navigation-drawer__content{
-  background-color: #d58821;
+  background-color: var(--honeyH);
 }
 .bg-teal{
-  background-color: #d58821 !important;
-}
-.v-layout{
-  /* background-color: #e9e978; */
+  background-color: var(--honeyH) !important;
 }
 .bg-black{
-  background-color: #d58821 !important;
+  background-color: var(--honeyD) !important;
 }
 </style>

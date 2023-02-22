@@ -8,10 +8,10 @@
       <v-divider></v-divider>
 
       <v-list density="comfortable" nav>
-        <router-link to="/portada">
+        <router-link to="portada">
           <v-list-item class="link" prepend-icon="mdi-home" title="Tasques" value="tasques"></v-list-item>
         </router-link>
-        <router-link v-if="role == 'Admin'" to="/users">
+        <router-link v-if="rol == 'Admin'" to="users">
           <v-list-item class="link" prepend-icon="mdi-account-cog" title="Usuaris" value="usuaris"></v-list-item>
         </router-link>
         <router-link to="/">

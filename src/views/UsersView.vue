@@ -31,8 +31,8 @@
                         </tr>
                     </tbody>
                 </v-table>
-                <v-btn class="btn" id="createUserBtn" icon="mdi-plus" size="large" @click="openCreator()" />
             </v-card>
+            <v-btn class="btn" id="createUserBtn" size="large" @click="openCreator()">Nou Usuari</v-btn>
         </div>
     </div>
     <creatorForm v-if="showCreator" @tancarRol="showCreator = false" @tecnic="createUser('Tecnic')"
@@ -147,41 +147,19 @@ export default {
             this.modify = false;
         },
         snackbarCreator(input) {
-            if (input[0] == 'create') {
-                if (input[1] == 'ok')
-                    this.textSnack = "Usuari creat correctament";
-                else
-                    this.textSnack = "ERROR: No s'ha pogut crear l'usuari";
-                this.snackbar = true;
-            }
-            else if (input[0] == 'delete') {
-                if (input[1] == 'ok')
-                    this.textSnack = "Usuari eliminat correctament";
-                else {
-                    this.textSnack = "ERROR: No s'ha pogut eliminar l'usuari";
-                }
-                this.snackbar = true;
-            }
-            else if (input[0] == 'update') {
-                if (input[1] == 'ok')
-                    this.textSnack = 'Usuari actualitzat correctament';
-                else {
-                    this.textSnack = "ERROR: No s'ha pogut actualitzar l'usuari";
-                }
-                this.snackbar = true;
-            }
-            else if (input[0] == 'validate') {
-                if (input[1] == 'ok')
-                    this.textSnack = "Has d'omplir tots els camps";
-                this.snackbar = true;
-            }
-
+            this.textSnack = input;
+            this.snackbar = true;
         }
+
     },
     mounted() {
         this.getListUsers();
-        if (!localStorage.getItem("token_usuari") || localStorage.getItem["token_usuari"] != "Admin") {
+        if (localStorage.getItem('Rol') != 'Admin') {
             this.$router.push("portada");
+        }
+        if (!localStorage.getItem("token_usuari") || localStorage.getItem('expire_time') < Date.now()) {
+            localStorage.clear();
+            this.$router.push("/");
         }
     }
 }
@@ -232,8 +210,13 @@ div.content .create {
     background-color: var(--honeyG);
 }
 
-.list .btn {
-    background-color: var(--honeyD);
+.btn {
+    background-color: var(--honeyE);
+}
+@media (max-width: 800px) {
+    .btn {
+        left: 40%;
+    }
 }
 
 .list td,
@@ -251,11 +234,8 @@ th {
 #createUserBtn {
     position: fixed;
     left: 48%;
-    top: 78%;
-    opacity: 0.5;
+    top: 87%;
 }
 
-#createUserBtn:hover {
-    opacity: 1;
-}
+
 </style>

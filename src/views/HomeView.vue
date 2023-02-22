@@ -1,18 +1,22 @@
 <template>
   <toolbar :rol="rol" :nom="nom"></toolbar>
-  <select v-if="amagat" id="ordenar" v-model="ordre">Ordenar per:
-    <option value="prioritat">Prioritat</option>
-    <option value="nom">Nom</option>
-    <option value="datafi">DataFi</option>
-  </select>
-  <v-select id="ordenar">hola</v-select>
-  <v-btn rounded="pill" size="large" id="perfer" @click="filtre = 'todo'">Per Fer ⏳</v-btn>
-  <v-btn rounded="pill" size="large" id="enprogres" @click="filtre = 'ongoing'">En Progres ⚙️</v-btn>
-  <v-btn rounded="pill" size="large" id="finalitzar" @click="filtre = 'done'">Finalitzades ✅</v-btn>
-  <v-btn rounded="pill" size="large" id="totes" @click="filtre = 'tot'">Totes </v-btn>
+  <div v-if="llistaTasques.length!=0" class="superior" >
+    <v-btn class="filterbtn" rounded="pill" size="large" id="perfer" @click="filtre = 'todo'">Per Fer ⏳</v-btn>
+    <v-btn class="filterbtn" rounded="pill" size="large" id="enprogres" @click="filtre = 'ongoing'">En Progres ⚙️</v-btn>
+    <v-btn class="filterbtn" rounded="pill" size="large" id="finalitzar" @click="filtre = 'done'">Finalitzades ✅</v-btn>
+    <v-btn class="filterbtn" rounded="pill" size="large" id="totes" @click="filtre = 'tot'">Totes </v-btn>
+    
+    <select class="filterbtn" title="Ordenar per" v-if="amagat" id="ordenar" v-model="ordre">
+      <option value="prioritat">Prioritat</option>
+      <option value="nom">Nom</option>
+      <option value="datafi">DataFi</option>
+    </select>
+  </div>
   <div class="fitxa1">
     <tascafitxa v-if="rol !== 'Tecnic'" id="crearTasca" :estat="crear" :input_data="crearTasca"
       :prioritat="crearTascaBorder" @click="afegirTasca()"></tascafitxa>
+      <h1 v-if="llistaTasques.length==0">EEP!! No tens cap Tasca assignada. Torna més Tard</h1>
+    <img v-if="llistaTasques.length==0" src="https://i.pinimg.com/originals/60/48/31/60483168a0149cf0c531c5cddaa0c9ad.png">
     <tascafitxa v-for="na in estadoFiltrado" :input_data="na.Nom" :prioritat="na.Prioritat" :estat="na.Estat"
       @click="enviarTasca(na)"></tascafitxa>
   </div>
@@ -26,7 +30,8 @@
     </v-snackbar>
   <footercustom></footercustom>
   <tascaform v-if="isHidden" :informacio="tascaSeleccionada" :usuaris="llistat" :action="modify"
-    @tancar="isHidden = false" @snack="snackbarCreator($event)"></tascaform>
+  @refrescar="llistarTasques()" @tancar="isHidden = false"  @snack="snackbarCreator($event)"></tascaform>
+    
 
 </template>
 
@@ -52,8 +57,8 @@ export default {
       rol: "",
       nom: "",
       crear: "➕",
-      crearTasca: "Crear Tasca",
-      crearTascaBorder: "1",
+      crearTasca: "Nova Tasca",
+      crearTascaBorder: "0",
       filtre: "",
       ordre: "prioritat",
       modify: false,
@@ -86,6 +91,7 @@ export default {
         this.amagat = true
         let temp = this.llistaTasques.filter(tasca => tasca.Estat === this.filtre)
         return temp.sort((a, b) => Number(a.Prioritat) - Number(b.Prioritat));
+        
       } else if (this.ordre === 'nom') {
         this.amagat = true
         return this.llistaTasques.sort((a, b) => a.Nom.localeCompare(b.Nom)).filter(tasca => tasca.Estat === this.filtre);
@@ -173,63 +179,64 @@ export default {
   },
   mounted() {
     this.llistats();
-    if (!localStorage.getItem("token_usuari")) {
-      this.$router.push("home");
+    if (!localStorage.getItem("token_usuari") || localStorage.getItem('expire_time') < Date.now()) {
+      localStorage.clear();
+      this.$router.push("/");
     }
   }
 }
 </script>
 
 <style>
+.filterbtn {
+  background-color: var(--honeyG);
+}
+#ordenar {
+  padding: 11px;
+  border-radius: 50px;
+  width: 150px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0px 3px 1px -2px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)), 0px 2px 2px 0px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.14)), 0px 1px 5px 0px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.12));
+}
+
+.superior {
+  display: flex;
+  width: -webkit-fill-available;
+  position: absolute;
+  top: 10px;
+  left: 65px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+  align-items: center;
+  z-index: 900;
+}
+
 .fitxa1 {
   position: absolute;
   width: -webkit-fill-available;
-  height: -webkit-fill-available;
+  height: 85%;
   margin: 5px;
   top: 10%;
-  left: 10%;
-  /*display: flex;*/
+  left: 6%;
   overflow-y: auto;
-  /*gap: 20px;*/
-  flex-wrap: wrap;
+  border-radius: 20px;
+  padding: 20px;
 }
-
+.fitxa1 img {
+  width: auto;
+  height: 500px;
+  filter: drop-shadow(2px 4px 6px black);
+}
 html {
   overflow: hidden;
 }
-
-#perfer {
-  position: absolute;
-  top: 3%;
-  left: 10%;
-}
-
-#enprogres {
-  position: absolute;
-  top: 3%;
-  left: 27%;
-}
-
-#finalitzar {
-  position: absolute;
-  top: 3%;
-  left: 45%;
-}
-
-#totes {
-  position: absolute;
-  top: 3%;
-  left: 65%;
-}
-
-#ordenar {
-  position: absolute;
-  top: 3%;
-  left: 80%;
-}
-
-#creartasca tspan {
-  font-size: 70px;
+#creartasca polygon {
+  border: none !important;
+  stroke-width: 0px !important;
+  fill: var(--honeyH) !important;
 }
 
 ::-webkit-scrollbar {

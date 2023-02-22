@@ -2,7 +2,7 @@
   <div class="about">
     <h1>Avis Legal i Política de Privacitat </h1>
     <br>
-    <router-link id="tornar" to="/portada">
+    <router-link id="tornar" to="portada">
       <v-btn rounded="pill" size="large">Tornar a la Pàgina Princial</v-btn>
     </router-link>
     <br>

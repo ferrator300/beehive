@@ -303,6 +303,7 @@ export default {
     justify-content: space-between;
     gap: 40px;
     overflow-x: hidden;
+    z-index: 2000;
 
 }
 
@@ -313,7 +314,7 @@ export default {
 #boto {
     position: absolute;
     top: 1%;
-    left: 95%;
+    left: 1%;
 }
 
 @media (min-width: 800px) {

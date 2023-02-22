@@ -42,12 +42,13 @@ export default {
                 output = JSON.parse(xmlhttp.responseText);
                 console.log(output[0]);
                 localStorage.setItem("token_usuari", output[0]);
+                localStorage.setItem("expire_time", Date.now() + 3600000);
                 localStorage.setItem("NomUsuari", output[1]);
                 localStorage.setItem("Rol", output[2]);
                 this.$router.push("portada");
             }
             else {
-                alert('Login Incorrecte');
+                console.log('Login Incorrecte');
             }
         },
         /*

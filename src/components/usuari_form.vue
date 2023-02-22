@@ -4,7 +4,8 @@
         <h1 v-if="act == false">Nou {{ rol }}</h1>
         <h1 v-if="act">Modificació usuari</h1><br>
         <v-text-field id="userName" label="Nom" v-model="input_data.Nom"></v-text-field>
-        <v-text-field id="userEmail" label="Email" v-model="input_data.Email"></v-text-field>
+        <v-text-field v-if="act==false" id="userEmail" label="Email" v-model="input_data.Email"></v-text-field>
+        <v-text-field v-if="act" disabled id="userEmail" label="Email" v-model="input_data.Email"></v-text-field>
         <v-text-field id="userPassword" label="Contrasenya" type="password"></v-text-field>
         <v-text-field id="userPasswordConfirm" label="Confirmar Contrasenya" type="password"></v-text-field>
         <v-text-field id="userRol" label="Rol" v-model="role" style="display: none"></v-text-field>
@@ -65,10 +66,10 @@ export default {
             xmlhttp.send(JSON.stringify(data));
             if (xmlhttp.status == 200) {
                 this.close();
-                this.$emit('snack', ['delete', 'ok']);
+                this.$emit('snack', 'Usuari eliminat correctament');
             }
             else
-                this.$emit('snack', ['delete', 'error']);
+                this.$emit('snack', "Error al eliminar l'usuari");
 
         },
 
@@ -96,10 +97,10 @@ export default {
                 xmlhttp.send(JSON.stringify(data));
                 if (xmlhttp.status == 200) {
                     this.close();
-                    this.$emit('snack', ['update', 'ok']);
+                    this.$emit('snack', "L'usuari s'ha modificat correctament");
                 }
                 else
-                    this.$emit('snack', ['update', 'error']);
+                    this.$emit('snack', "Error al modificar l'usuari");
             }
             else
                 console.log('ERROR Update');
@@ -131,10 +132,10 @@ export default {
                 xmlhttp.send(JSON.stringify(data));
                 if (xmlhttp.status == 200) {
                     this.close();
-                    this.$emit('snack', ['create', 'ok']);
+                    this.$emit('snack', "L'usuari s'ha creat correctament");
                 }
                 else
-                    this.$emit('snack', ['create', 'error'])
+                    this.$emit('snack', "Error al crear l'usuari")
             }
             else
                 console.log('ERROR Create');
@@ -147,7 +148,7 @@ export default {
             var pass2 = document.getElementById("userPasswordConfirm").value;
 
             if (!name || !email || !pass || !pass2 || pass2 != pass ) {
-                this.$emit('snack', ['validate', 'ok'])
+                this.$emit('snack', "S'ha d'omplir tots els camps")
                 return false;
             }
             else {
@@ -203,6 +204,7 @@ export default {
     height: 80%;
     padding: 50px;
     background-color: var(--honeyG);
+    overflow-y: auto;
 }
 
 .user_form_close {
