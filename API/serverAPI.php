@@ -106,10 +106,14 @@ class Server
         $method = $_SERVER['REQUEST_METHOD'];
         $paths = explode('/', $uri);
         array_shift($paths); // Això seria Localhost
-        array_shift($paths); // /BEEHIVE
+        // array_shift($paths); // /BEEHIVE
         array_shift($paths);// /API
         $resource = array_shift($paths); //Localitzador (Usuari, Token o Tasca)
         $accio = array_shift($paths); // Token o Ciutat
+
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {    
+            return header('HTTP/1.1 200 OK Usuari Logejat Correctament');   
+         }    
 
         //Si ens demanen Token
 		if($resource == 'Token')
@@ -157,12 +161,14 @@ class Server
                         //Eliminem el Token de TaulaToken
                         $database->eliminarTokenTaula($data['token']);
 
+                        $arrayInfo=[$tokenUsuari, $usuari["Nom"], $usuari["Rol"]];
                         //Retornem el Token de l'usuari
-                        header('HTTP/1.1 200 OK. Usuari Logejat Correctament');
-                        echo json_encode($tokenUsuari);
+                        header('HTTP/1.1 200 OK Usuari Logejat Correctament');
+                        echo json_encode($arrayInfo);
                     }
                     else
                         header('HTTP/1.1 400 Usuari o Contrasenya Incorrecte.');
+                        // header('HTTP/1.1 400 Usuari o Contrasenya Incorrecte.');
                     
                 }
                 else
@@ -389,7 +395,7 @@ class Server
                     $database = new BDD();
                     $database->connect();
                     
-                    if($database->actualitzarEstat($data['estat'],$data['id'])){
+                    if($database->actualitzarEstat($data['estat'],$data['id'],$data['comentaris'])){
                         header('HTTP/1.1 200 OK. Tasca Tramitada Correctament');
                     }
                     else
@@ -405,7 +411,8 @@ class Server
         else{
             header('HTTP/1.1 404 Not Found . Algo ha fallat');
         }     
-    } 
+    
+}
 }
 $server = new Server;
 $server->serve();

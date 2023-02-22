@@ -24,53 +24,57 @@ export default {
         tasca_form
     },
     computed: {
-        iconesEstat() {
-            if (this.estat === "todo") {
-                return "⏳";
-            }
-            else if (this.estat === "ongoing") {
-                return "⚙️";
-            }
-            else if (this.estat === "done") {
-                return "✅";
-            }
-            else {
-                return "➕";
-            }
+        //Depenent de l'estat retornarà un icone o un altre
+        iconesEstat(){
+        if(this.estat==="todo"){
+            return "⏳";
+        }
+        else if(this.estat==="ongoing"){
+            return "⚙️";
+        }
+        else if(this.estat==="done"){
+            return "✅";
+        }
+        else{
+            return "➕"; 
+        }
 
-        },
-        colorFitxa() {
-            switch (this.prioritat) {
-                case "0":
-                    return "none";
-                case "1":
-                case "2":
-                    return "lightgreen";
-                case "3":
-                case "4":
-                    return "gold";
-                case "5":
-                case "6":
-                    return "orange";
-                case "7":
-                case "8":
-                    return "red";
-                case "9":
-                    return "black";
-            }
-        },
     },
+    //Depenent de la prioritat retornarà un icone o un altre
+    colorFitxa() {
+      switch (this.prioritat) {
+        case "0":
+            return "none";
+        case "1":
+        case "2":
+          return "lightgreen";
+        case "3":
+        case "4":
+          return "gold";
+        case "5":
+        case "6":
+          return "orange";
+        case "7":
+        case "8":
+          return "red";
+        case "9":
+          return "black";
+      }
+    },
+    }, 
     methods: {
-        colorBorder() {
-            if (this.est === "todo") {
-                return "yellow";
-            }
-            else if (this.est === "ongoing") {
-                return "red";
-            }
-            else {
-                return "green";
-            }
+
+    //Mètode no utilitzat al final, mètode utilitzat en versions anteriors
+    colorBorder(){
+        if(this.est==="todo"){
+            return "yellow";
+        }
+        else if(this.est==="ongoing"){
+            return "red";
+        }
+        else{
+            return "green";
+        }
 
         },
     }

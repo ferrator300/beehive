@@ -45,6 +45,7 @@ export default {
     RouterLink
 },
 computed: {
+  //Camp Computed que canvia el logo depenent de la sessió logejada
   avatarPath() {
       if (this.rol === 'Tecnic') {
         return LOGO_Tecnic;
