@@ -15,7 +15,7 @@
           <v-list-item class="link" prepend-icon="mdi-account-cog" title="Usuaris" value="usuaris"></v-list-item>
         </router-link>
         <router-link to="/">
-          <v-list-item @click="handleLogout" prepend-icon="mdi-logout-variant" title="Sortir" value="logout"></v-list-item>
+          <v-list-item class="link" @click="handleLogout" prepend-icon="mdi-logout-variant" title="Sortir" value="logout"></v-list-item>
         </router-link>
 
       </v-list>
@@ -38,16 +38,11 @@ export default {
   data() {
     return {
       role : localStorage.getItem('Rol'),
+      img: '@/assets/LOGO_Admin.png',
     }
   },
   components: {
     RouterLink
-},
-data(){
-  return{
-    img: '@/assets/LOGO_Admin.png' 
-    
-  }
 },
 computed: {
   avatarPath() {
@@ -61,19 +56,6 @@ computed: {
     }
   },
     methods: {
-        /* 
-            Function: checkRol
-
-        Comprovació del rol de l’usuari
-
-            Parameters:
-                none
-        */
-        checkRol() {
-            var apikey = "";
-            var input = "";
-            var output = "";
-        },
         handleLogout() {
           localStorage.clear();
         }
@@ -92,6 +74,10 @@ nav a {
   font-weight: bold;
   color: var(--honeyA);
   text-decoration: none;
+}
+
+.v-list-item--nav .v-list-item-title {
+  font-size: 1rem !important;
 }
 
 nav a.router-link-exact-active {
@@ -131,6 +117,7 @@ nav {
 .v-layout {
   /* background-color: #e9e978; */
 }
+.link
 
 .bg-black {
   background-color: #d58821 !important;

@@ -65,7 +65,6 @@ export default {
     data() {
         return {
             llistat: {},
-            rol: localStorage.getItem('rol'),
             showForm: false,
             showCreator: false,
             userFormData: {},
