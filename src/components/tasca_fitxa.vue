@@ -22,6 +22,7 @@ export default {
         tasca_form
     }, 
     computed: {
+        //Depenent de l'estat retornarà un icone o un altre
         iconesEstat(){
         if(this.estat==="todo"){
             return "⏳";
@@ -37,6 +38,7 @@ export default {
         }
 
     },
+    //Depenent de la prioritat retornarà un icone o un altre
     colorFitxa() {
       switch (this.prioritat) {
         case "0":
@@ -72,6 +74,7 @@ export default {
         //     var input = "";
         //     var output = "";
         // }
+    //Mètode no utilitzat al final, mètode utilitzat en versions anteriors
     colorBorder(){
         if(this.est==="todo"){
             return "yellow";

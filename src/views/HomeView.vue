@@ -68,6 +68,8 @@ export default {
     }
   },
   computed: {
+    //Camp Computed que ens filtra i Ordena el llistat de Tasques
+    //A la que faci click a qualsevol boto, mostrara el select per triar el mètode d'ordenacio, per això fem el amagat true,
     estadoFiltrado() {
       if (this.filtre == "") {
         return this.llistaTasques
@@ -119,6 +121,7 @@ export default {
     //     var output = "";
     // }
 
+        //Mètode que ens recupera el llistat de tasques 
         llistarTasques() {
             var userToken = localStorage.getItem("token_usuari");
             // var apikey = "";
@@ -136,6 +139,7 @@ export default {
                     this.$router.push("/");
                 }
         },
+        //Mètode que crida als 2 mètodes de llistats (LlistatUsuaris i LlistatTasques)
         llistats(){
           this.rol=localStorage.getItem("Rol");
           this.nom=localStorage.getItem("NomUsuari");
@@ -145,32 +149,37 @@ export default {
           }
          
         },
+        //Mètode que envia la informació de la tasca al component tasca_form
         enviarTasca(infoTasca){
           this.isHidden=true
           this.tascaSeleccionada = infoTasca
           this.modify=true
         },
+        //Mètode que enviem al component tasca_form buit per nova tasca
         afegirTasca(){
           this.isHidden=true
           this.tascaSeleccionada = {}
           this.modify=false
         },
+        //Mètode que ens recupera un llistat d'usuaris
         getListUsers() {
             var userToken = localStorage.getItem("token_usuari");
             var input = "http://beehive.daw.institutmontilivi.cat/API/Usuari/Llistat";
 
-      var xmlhttp = new XMLHttpRequest();
-      xmlhttp.open("PUT", input, false);
-      xmlhttp.setRequestHeader("Content-type", "application/json");
-      xmlhttp.send(JSON.stringify(userToken));
-      if (xmlhttp.status == 200) {
-        var data = JSON.parse(xmlhttp.responseText);
-        this.llistat = data.map(item => item.Email)
-      }
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("PUT", input, false);
+            xmlhttp.setRequestHeader("Content-type", "application/json");
+            xmlhttp.send(JSON.stringify(userToken));
+            if (xmlhttp.status == 200) {
+              var data = JSON.parse(xmlhttp.responseText);
+              this.llistat = data.map(item => item.Email)
+            }
     },
+    //Mètode no utilitzat al final (utilitzat en versions anteriors)
     canvi(event) {
       this.filtre = event.target.value;
     },
+    //Mètode que mostra els alert de manera maca (Inferior)
     snackbarCreator(input) {
             this.textSnack = input;
             this.snackbar = true;
@@ -179,6 +188,7 @@ export default {
   },
   mounted() {
     this.llistats();
+    //Si no detecta token usuari o ha acabat el temps de sessió tornem al inici
     if (!localStorage.getItem("token_usuari") || localStorage.getItem('expire_time') < Date.now()) {
       localStorage.clear();
       this.$router.push("/");

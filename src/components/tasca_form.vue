@@ -107,10 +107,13 @@ export default {
         //     var input = "";
         //     var output = "";
         // }
+        
+        //Mètode que tenca el Component i envia missatge al pare perque el deixi de mostrar
         tancar() {
             this.isHidden = false;
             this.$emit("tancar")
         },
+        //Mètode que actualitza la Tasca
         actualitzarTasca() {
             var nom = this.informacio.Nom;
             var desc = this.informacio.Descripcio;
@@ -135,6 +138,7 @@ export default {
             var id = this.informacio.IdTasca;
             var tokenUsuari = localStorage.getItem("token_usuari");
 
+            //Si algun camp no esta emplenat, impedim l'actualització
             if (!nom || !desc || !datainici || !datafi || !estat || !prioritat || !email) {
                 this.$emit('snack',"Has d'emplenar tots els camps!!");
                 return;
@@ -160,6 +164,7 @@ export default {
             xmlhttp.open("PUT", input, false);
             xmlhttp.setRequestHeader("Content-type", "application/json");
             xmlhttp.send(JSON.stringify(data));
+            //Si es correcte enviem missatge de que esta bé i enviem emit al pare perque torni a refrescar la llista de tasques
             if (xmlhttp.status == 200) {
                 this.$emit('snack', "Tasca Editada Correctament");
                 this.$emit('refrescar');
@@ -168,6 +173,7 @@ export default {
                 this.$emit('snack',"ERROR al Editar la Tasca");
             }
         },
+        //Mètode per Eliminar Tasques
         eliminarTasca() {
             var id = this.informacio.IdTasca;
             var tokenUsuari = localStorage.getItem("token_usuari");
@@ -183,6 +189,7 @@ export default {
             xmlhttp.open("PUT", url, false);
             xmlhttp.setRequestHeader("Content-type", "application/json");
             xmlhttp.send(JSON.stringify(data));
+             //Si es correcte enviem missatge de que esta bé i enviem emit al pare perque torni a refrescar la llista de tasques
             if (xmlhttp.status == 200) {
                 this.$emit('snack', "Tasca Eliminada Correctament");
                 this.$emit('refrescar');
@@ -191,6 +198,7 @@ export default {
                 this.$emit('snack',"ERROR al Eliminar la Tasca");
             }
         },
+        //Mètode per Tramitar Tasques
         tramitarTasca() {
             var id = this.informacio.IdTasca;
             var tokenUsuari = localStorage.getItem("token_usuari");
@@ -222,6 +230,7 @@ export default {
             xmlhttp.open("PUT", url, false);
             xmlhttp.setRequestHeader("Content-type", "application/json");
             xmlhttp.send(JSON.stringify(data));
+             //Si es correcte enviem missatge de que esta bé i enviem emit al pare perque torni a refrescar la llista de tasques
             if (xmlhttp.status == 200) {
                 this.$emit('snack', "Tasca Tramitada Correctament");
                 this.$emit('refrescar');
@@ -230,6 +239,7 @@ export default {
                 this.$emit('snack',"ERROR al Tramitar la Tasca");
             }
         },
+        //Mètode per Crear Tasques
         crearTasca() {
             var nom = this.informacio.Nom;
             var desc = this.informacio.Descripcio;
@@ -250,6 +260,7 @@ export default {
             var email = this.informacio.Email;
             var tokenUsuari = localStorage.getItem("token_usuari");
 
+             //Si algun camp no esta emplenat, impedim la creació
             if (!nom || !desc || !datainici || !datafi || !estat || !prioritat || !email) {
                 this.$emit('snack',"Has d'emplenar tots els camps!!");
                 return;
@@ -274,6 +285,7 @@ export default {
             xmlhttp.open("PUT", input, false);
             xmlhttp.setRequestHeader("Content-type", "application/json");
             xmlhttp.send(JSON.stringify(data));
+            // //Si es correcte enviem missatge de que esta bé i enviem emit al pare perque torni a refrescar la llista de tasques
             if (xmlhttp.status == 200) {
                 this.$emit('snack', "Tasca Creada Correctament");
                 this.$emit('refrescar');
